@@ -1,34 +1,82 @@
 {
-  "name": "split-file",
-  "version": "2.3.0",
-  "private": false,
-  "description": "Splitting and merging files with NodeJS",
+  "name":
+    "themartiancompany@split-file",
+  "version":
+    "2.3.0",
+  "private":
+    false,
+  "description":
+    "Splitting and merging files with NodeJS",
+  "homepage":
+    "https://github.com/themartiancompany/crash-js",
+  "bugs": {
+    "url":
+      "https://github.com/themartiancompany/node-split-file/issues"
+  },
+  "author": 
+    { "name":
+        "Pellegrino Prevete",
+      "email":
+        "pellegrinoprevete@gmail.com",
+      "url":
+        "https://github.com/tallero" },
+  "contributors": [
+    { "name":
+        "Tom Valk",
+      "email":
+        "tomvalk@lt-box.info" }
+  ],
+  "license":
+    "AGPL3",
   "keywords": [
+    "opfs",
     "split",
     "file",
     "stream"
   ],
-  "author": "Tom Valk <tomvalk@lt-box.info",
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:tomvlk/node-split-file.git"
-  },
-  "bugs": {
-    "url": "https://github.com/tomvlk/node-split-file/issues"
-  },
-  "scripts": {
-    "test": "jest --runInBand"
-  },
+  "files": [
+    "COPYING",
+    "AUTHORS.rst",
+    "README.md",
+    "lib",
+    "split-file"
+  ],
   "bin": {
-    "split-file": "split-file-cli.js"
+    "split-file":
+      "./split-file"
   },
-  "license": "MIT",
-  "main": "split-file",
+  "main":
+    "./lib/split-file",
+  "man":
+    "./man/split-file.1",
+  "repository": {
+    "type":
+      "git",
+    "url":
+      "https://github.com:themartiancompany/node-split-file.git"
+  },
   "dependencies": {
-    "bluebird": "^3.7.2"
+    "bluebird":
+      "^3.7.2"
   },
   "devDependencies": {
-    "jest": "^26.6.3",
-    "mocha": "^8.4.0"
+    "@std/path":
+      "npm:@themartiancompany/std__path@^1.1.1",
+    "eslint":
+      "^9.32.0",
+    "happy-opfs":
+      "npm:@themartiancompany/happy-opfs@^1.8.10",
+    "jest":
+      "^26.6.3",
+    "mocha":
+      "^8.4.0"
+  },
+  "scripts": {
+    "build":
+      "npm run lint",
+    "lint":
+      "npx eslint .",
+    "test":
+      "jest --runInBand"
   }
 }

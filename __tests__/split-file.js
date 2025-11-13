@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 
 const splitFile = require('../split-file');
 const fs = require('fs');
