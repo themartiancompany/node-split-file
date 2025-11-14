@@ -75,6 +75,8 @@ const
       "bluebird");
 _promise_reject =
   _promise.reject;
+_promise_resolve =
+  _promise.resolve;
 _promisify =
   _promise.promisify;
 _map_series =
@@ -102,222 +104,236 @@ var
   _split_file =
     function () {};
 
-function
-  _input_file_check(
+_split_file.prototype._input_file_check =
+  function (
     _stat) {
-  let
-    _error,
-    _msg,
-    _rejection;
-  if ( ! _stat.isFile ) {
-    _msg =
-      "Given file is not valid.";
-    _error =
-      new Error(
-        _msg);
-    _rejection =
-      _promise_reject(
-        _error);
-    return _rejection;
-  }
-  if ( ! _stat.size ) {
-    _msg =
-      "File is empty.";
-    _error =
-      new Error(
-        _msg);
-    _rejection =
-      _promise_reject(
-        _error);
-    return _rejection;
-  }
-}
+    let
+      _error,
+      _msg,
+      _rejection;
+    if ( ! _stat.isFile ) {
+      _msg =
+        "Given file is not valid.";
+      _error =
+        new Error(
+          _msg);
+      _rejection =
+        _promise_reject(
+          _error);
+      return _rejection;
+    }
+    if ( ! _stat.size ) {
+      _msg =
+        "File is empty.";
+      _error =
+        new Error(
+          _msg);
+      _rejection =
+        _promise_reject(
+          _error);
+      return _rejection;
+    }
+  };
 
-function
-  _parts_check(
+/**
+ * Checks parts amount parameter is correct
+ * @param {parts_amount} parts
+ */
+_split_file.prototype._parts_amount_check =
+  function (
     _parts_amount) {
-  let
-    _error,
-    _msg,
-    _rejection;
-  if ( _parts_amount < 1 ) {
-    _msg =
-      "Parameter 'parts' is invalid, " +
-      "must contain an integer value.";
-    _error =
-      new Error(
-            _msg); 
-    _rejection =
-      _promise_reject(
-        _error);
-    return _rejection;
-  }
-}
+    let
+      _error,
+      _msg,
+      _rejection;
+    if ( _parts_amount < 1 ) {
+      _msg =
+        "Parameter 'parts' is invalid, " +
+        "must contain an integer value.";
+      _error =
+        new Error(
+              _msg); 
+      _rejection =
+        _promise_reject(
+          _error);
+      return _rejection;
+    }
+  };
 
-function
-  _input_files_check(
+_split_file.prototype._input_files_check =
+  function (
     _input_files) {
-  let
-    _error,
-    _msg,
-    _rejection;
-  if ( _input_files.length <= 0 ) {
-    _msg =
-      "Make sure you input an array " +
-      "with files as first parameter."
-    _error =
-      new Error(
-            _msg); 
-    _rejection =
-      _promise_reject(
-        _error);
-    return _rejection;
-  }
-}
+    let
+      _error,
+      _msg,
+      _rejection;
+    if ( _input_files.length <= 0 ) {
+      _msg =
+        "Make sure you input an array " +
+        "with files as first parameter."
+      _error =
+        new Error(
+          _msg); 
+      _rejection =
+        _promise_reject(
+          _error);
+      return _rejection;
+    }
+  };
 
-function
-  _split_size_check(
+_split_file.prototype._split_size_check =
+  function (
     _split_size) {
-  let
-    _error,
-    _msg,
-    _rejection;
-  if ( _split_size < 1 ) {
-    _msg =
-      "Too many parts, or file too small.";
-    _error =
-      new Error(
-        _msg);
-    _rejection =
-      _promise_reject(
-        _error);
-    return _rejection;
-  }
-}
+    let
+      _error,
+      _msg,
+      _rejection;
+    if ( _split_size < 1 ) {
+      _msg =
+        "Too many parts, or file too small.";
+      _error =
+        new Error(
+          _msg);
+      _rejection =
+        _promise_reject(
+          _error);
+      return _rejection;
+    }
+  };
 
-function
-  _split_file_callback_get(
+_split_file.prototype._split_file_callback_get =
+  function (
     _input_file,
-    _parts_amount) {
-  let
-    _split_file_callback;
-  _split_file_callback =
-    function(
-      _stat_out) {
-      let
-        _input_file_rejected,
-        _partition_info,
-        _split_size,
-        _split_size_last,
-        _split_size_rejected,
-        _size_total;
-      _input_file_rejected =
-        _input_file_check(
-          _stat_out);
-      if ( typeof _input_file_rejected !== 'undefined' ) {
-        return _input_file_rejected;
-      }
-      _size_total =
-        _stat_out.size;
-      _split_size =
-        _floor(
-          _size_total / _parts_amount );
-      _split_size_rejected =
-        _split_size_check(
-          _split_size);
-      if ( typeof _split_size_rejected !== 'undefined' ) {
-        return _split_size_rejected;
-      }
-      // Get last split size, this is different
-      // from the others because it uses scrap value.
-      _split_size_last =
-        _split_size + ( _size_total % _parts_amount );
-      // Define the _partition_info:
-      _partition_info =
-        [];
-      // Iterate on the parts
-      for ( let _partition = 0;
-            _partition < _parts_amount;
-            _partition++) {
-        _partition_info[
-          _partition] =
-          { number:
-              _partition + 1,
-            // Set buffer read start position
-            start:
-              _partition * _split_size,
-            // Set total ending position
-            end:
-              ( _partition * _split_size ) + _split_size };
-        if ( _partition === _parts_amount - 1 ) {
-          partition_info[
-            _partition].end =
-              ( _partition * _split_size ) + _split_size_last;
+    _parts_amount,
+    _output_dir) {
+    let
+      _split_file_callback;
+    _split_file_callback =
+      function(
+        _stat_out) {
+        let
+          _input_file_rejected,
+          _target_partitions,
+          _split_size,
+          _split_size_last,
+          _split_size_rejected,
+          _size_total;
+        _input_file_rejected =
+          _split_file.prototype._input_file_check(
+            _stat_out);
+        if ( typeof _input_file_rejected !== 'undefined' ) {
+          return _input_file_rejected;
         }
-      }
-      return self.__split_file(
-               _input_file,
-               _partition_info,
-               _dest);
-    };
-  return _split_file_callback;
-}
+        _size_total =
+          _stat_out.size;
+        _split_size =
+          _floor(
+            _size_total / _parts_amount );
+        _split_size_rejected =
+          _split_file.prototype._split_size_check(
+            _split_size);
+        if ( typeof _split_size_rejected !== 'undefined' ) {
+          return _split_size_rejected;
+        }
+        // Get last split size, this is different
+        // from the others because it uses scrap value.
+        _split_size_last =
+          _split_size + ( _size_total % _parts_amount );
+        // Define the _partition_info:
+        _target_partitions =
+          [];
+        // Iterate on the parts
+        for ( let _partition = 0;
+              _partition < _parts_amount;
+              _partition++) {
+          _target_partitions[
+            _partition] =
+            { number:
+                _partition + 1,
+              // Set buffer read start position
+              start:
+                _partition * _split_size,
+              // Set total ending position
+              end:
+                ( _partition * _split_size ) + _split_size };
+          if ( _partition === _parts_amount - 1 ) {
+            _target_partitions[
+              _partition].end =
+                ( _partition * _split_size ) + _split_size_last;
+          }
+        }
+        return _split_file.prototype._split_file_main(
+                 _input_file,
+                 _target_partitions,
+                 _output_dir);
+      };
+    return _split_file_callback;
+  };
 
-function
-  _split_file_by_size_callback(
-    _stat_out) {
-  let
-    _input_file_rejected,
-    _partition_info,
-    _size_total,
-    _split_size,
-    _split_size_rejected,
-    _parts;
-  _input_file_rejected =
-    _input_file_check(
-      _stat_out);
-  if ( typeof _input_file_rejected !== 'undefined' ) {
-    return _input_file_rejected;
+_split_file.prototype._split_file_by_size_callback_get =
+  function (
+      _input_file,
+      _parts_amount,
+      _output_dir) {
+    let
+      _split_file_by_size_callback;
+    _split_file_by_size_callback =
+      function (
+          _stat_out) {
+        let
+          _input_file_rejected,
+          _partition_info,
+          _size_total,
+          _split_size,
+          _split_size_rejected,
+          _parts_amount;
+        _input_file_rejected =
+          _split_file.prototype._input_file_check(
+            _stat_out);
+        if ( typeof _input_file_rejected !== 'undefined' ) {
+          return _input_file_rejected;
+        }
+        _size_total =
+          _stat_out.size;
+        _parts_amount =
+          _ceil(
+            _size_total / _size_max);
+        _split_size =
+          _round(
+            _size_max);
+        _split_size_rejected =
+          _split_file.prototoype._split_size_check(
+            _split_size);
+        if ( typeof _split_size_rejected !== 'undefined' ) {
+          return _split_size_rejected;
+        }
+        _target_partitions =
+          [];
+        for ( let _partition = 0;
+              _partition < _parts;
+              _partition++) {
+          _target_partitions[
+            _partition] =
+            { number:
+                _partition + 1,
+              // Set buffer read start position
+              start:
+                _partition * _split_size,
+              // Set total ending position
+              end:
+                ( _partition * _split_size ) + split_size };
+        }
+        // recalculate the size of the last chunk
+        _target_partitions[
+          _target_partitions.length - 1].end =
+          _size_total;
+        return _split_file.prototype._split_file_main(
+                 _input_file,
+                 _target_partitions,
+                 _output_dir);
+      };
+    return _split_file_by_size_callback;
   }
-  _size_total =
-    _stat_out.size;
-  _parts =
-    _ceil(
-      _size_total / _size_max);
-  _split_size =
-    _round(
-      _size_max);
-  _split_size_rejected =
-    _split_size_check(
-      _split_size);
-  if ( typeof _split_size_rejected !== 'undefined' ) {
-    return _split_size_rejected;
-  }
-  _partition_info =
-    [];
-  for ( let _partition = 0;
-        _partition < _parts;
-        _partition++) {
-    _partition_info[
-      _partition] =
-      { number:
-          _partition + 1,
-        // Set buffer read start position
-        start:
-          _partition * _split_size,
-        // Set total ending position
-        end:
-          ( _partition * _split_size ) + split_size };
-  }
-  // recalculate the size of the last chunk
-  _partition_info[
-    _partition_info.length - 1].end =
-    _size_total;
-  return self.__split_file(
-           _file,
-           _partition_info,
-           _dest);
-}
 
 /**
  * Split file into number of parts
@@ -336,13 +352,11 @@ _split_file.prototype._split_file =
     _msg,
     _parts_rejected,
     _rejection,
-    _split_promise,
+    _split_file_callback,
+    _split_file_promise,
     _stat_promisified;
-  var
-    self =
-      this;
   _parts_rejected =
-    _parts_check(
+    _split_file.prototype._parts_amount_check(
       _parts_amount);
   if ( typeof _parts_rejected !== 'undefined' ) {
     return _parts_rejected;
@@ -350,11 +364,16 @@ _split_file.prototype._split_file =
   _stat_promisified =
     _promisify(
       _stat);
-  _split_promise =
+  _split_file_callback =
+    _split_file.prototype._split_file_callback_get(
+      _input_file,
+      _parts_amount,
+      _output_dir);
+  _split_file_promise =
     _stat_promisified(
       _input_file).then(
         _split_file_callback);
-  return _split_promise;
+  return _split_file_promise;
 };
 
 /**
@@ -365,18 +384,21 @@ _split_file.prototype._split_file =
  */
 _split_file.prototype._split_file_by_size =
   function (
-    _file,
+    _input_file,
     _size_max,
-    _dest) {
-  var
-    self =
-      this;
+    _output_dir) {
   let
     _split,
+    _split_file_by_size_callback,
     _stat_promisified;
   _stat_promisified =
     _promisify(
       _stat);
+  _split_file_by_size_callback =
+    _split_file.prototype._split_file_by_size_callback_get(
+      _input_file,
+      _parts_amount,
+      _output_dir);
   _split =
     _stat_promisified(
       _file).then(
@@ -413,7 +435,7 @@ function
       _resolve);
   }
   _read_write_stream_promise =
-    _promise(
+    new _promise(
       _read_write_stream_promise_function);
   return _read_write_stream_promise;
 }
@@ -525,16 +547,19 @@ function
         _partition_name,
         _partition_unpadded,
         _reader,
+        _reader_opts,
         _suffix_length;
+      _reader_opts =
+        { encoding:
+            null,
+          start:
+            _partition_info.start,
+          end:
+            _partition_info.end - 1 };
       _reader =
         _read_stream_create(
           _input_file,
-          { encoding:
-              null,
-            start:
-              _partition_info.start,
-            end:
-              _partition_info.end - 1 });
+          _reader_opts);
       // Part name (file name of part)
       // get the max number of digits to generate for part number
       // ex. if original file is split into 4 files, then it will be 1
@@ -589,11 +614,11 @@ function
       }
       _file_write_stream(
         _output_file);
-      output_files.push(
+      _output_files.push(
         _output_file);
   }
   _read_write_stream_promise =
-    _promise(
+    new _promise(
       _read_write_stream_promise_function);
   return _read_write_stream_promise;
 }
@@ -617,31 +642,40 @@ function
 
 /**
  * Split the file, given by partinfos and filepath
- * @access private
  * @param {string} file
  * @param {object} partInfo
  *
  * @returns {Promise}
  */
-_split_file.prototype.__split_file =
+
+_split_file.prototype._split_file_main =
   function (
     _input_file,
-    _partition_info,
+    _target_partitions,
     _output_dir) {
-  let
-    _output_files;
-  output_files =
-    [];
-  _tasks =
-    _map_series(
-      _partition_info,
-      _split_file_read_write_stream_promise_get(
-        _input_file,
-        _output_dir,
-        _partition_info,
-        _output_files)).then(
-      _split_file_read_write_stream_callback_get(
-        _output_files));
+  const
+    _output_files =
+      [];
+  const
+    _split_file_map_function =
+      function (
+        _partition_info) {
+        const
+          _split_file_read_write_stream_promise =
+            _split_file_read_write_stream_promise_get(
+              _input_file,
+              _output_dir,
+              _partition_info,
+              _output_files);
+        return _split_file_read_write_stream_promise;
+  }
+  const
+    _tasks =
+      _map_series(
+        _target_partitions,
+        _split_file_map_function).then(
+        _split_file_read_write_stream_callback_get(
+          _output_files));
   return _tasks;
 };
 

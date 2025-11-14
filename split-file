@@ -117,6 +117,7 @@ _cli.prototype._split_file =
     _argv,
     _input_file,
     _parts_amount,
+    _parts_amount_not_number,
     _split_file_callback;
   _argv =
     process.argv;
@@ -127,7 +128,9 @@ _cli.prototype._split_file =
     parseInt(
       _argv[
         4]);
-  if ( isNaN(_parts) ) {
+  _parts_amount_not_number
+    isNaN(_parts_amount);
+  if ( _parts_amount_not_number ) {
     return this._usage();
   }
   _split_file_callback =
@@ -232,7 +235,8 @@ _cli.prototype._usage =
     _line,
     _usage_text;
   _usage_text = [
-    "Splitting and merging files with NodeJS",
+    "",
+    "Splitting and merging files in Node.js and in the browser using OPFS.",
     "",
     "Usage:",
     "  split-file",
