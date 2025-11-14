@@ -1,93 +1,73 @@
 ==============
-bin2txt
+split-file
 ==============
 
 --------------------------------------------------------
-Binary To Text
+Split File
 --------------------------------------------------------
-:Version: bin2txt |version|
+:Version: split-file |version|
 :Manual section: 1
 
 Synopsis
 ========
 
-split-file  *option* *[arguments]*
+split-file *option* *[arguments]*
 
 
 Description
 ===========
 
-Converts binary to ascii text.
+Splitting and merging files with NodeJS.
 
 
 Options
 ========
 
-     -s                          Split the input file in
-       <input>                   the given number of parts.
-       <num_parts>
-
--f encoding_format      Encoding format ('base64').
--B buffer_size          Size in bytes the input file will
-                        be split before being read
-   		        in memory and passed to
-   		        the encoder.
--L string_length        String chunk length.
--s                      Only print chunks amount.
+-s input num-parts      Split the input file in
+                        the given number of parts.
+-x input size-max       Split the input file into
+                        multiple parts with maximum
+                        file size of max_size bytes.
+-m output [parts]       Merge the given parts into
+                        the output file.
 
 -h                      Display help.
--c                      Enable color output
--v                      Enable verbose output
 
 
-     -s                          Split the input file in
-       <input>                   the given number of parts.
-       <num_parts>
+Examples
+============
 
-     -x
-       <input>
-       <max_size>                Split the input file into
-                                 multiple parts with maximum
-                                 file size of max_size bytes.
+split-file \
+  -s \
+  "input.bin" \
+  5
 
-     -m                          Merge the given parts into
-       <output>                  the output file.
-       <part>
-       <part> ...
-        
-  examples:
-  
-     split-file \
-       -s \
-       "input.bin" \
-       5
-  
-     split-file \
-       -x \
-       "input.bin" \
-       457000
-  
-     split-file \
-       -m \
-       "output.bin" \
-       "part1" "part2" ...
+split-file \
+  -x \
+  "input.bin" \
+  457000
 
+split-file \
+  -m \
+  "output.bin" \
+  "part1" "part2" ...
 
 
 Bugs
 ====
 
-https://github.com/themartiancompany/encoding-tools/-/issues
+https://github.com/themartiancompany/node-split-file/-/issues
 
 Copyright
 =========
 
-Copyright Pellegrino Prevete. AGPL-3.0.
+Copyright Tom Valk, Pellegrino Prevete. AGPL-3.0.
 
 See also
 ========
 
-* base64
-* txt2bin
+* split
+* tmcsplit
+* tmccat
 
 .. include:: variables.rst
