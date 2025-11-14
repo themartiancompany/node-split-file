@@ -19,7 +19,7 @@ const
 
 module.exports = {
   entry:
-    './node_modules/crash-js/crash-js/fs-worker',
+    'fs-worker',
   output:
     _output,
   optimization: {

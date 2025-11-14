@@ -54,14 +54,13 @@ function
   cleanUp() {
   testSubFolders.forEach(
     (subFolder) => {
-      let
-        folder;
-      folder =
-        fs.readdirSync(
-          testRoot +
-          '/files/' +
-          subFolder +
-          '/');
+      const
+        folder =
+          fs.readdirSync(
+            testRoot +
+            '/files/' +
+            subFolder +
+            '/');
       folder.forEach(
         (fileName) => {
           if ( fileName.indexOf(
@@ -98,11 +97,10 @@ function
     file,
     algorithm,
     encoding) {
-  let
-    data;
-  data =
-    fs.readFileSync(
-      file);
+  const
+    data =
+      fs.readFileSync(
+        file);
   return checksum(
            data,
            algorithm ||
@@ -143,10 +141,10 @@ describe(
                      totalPartsSize = 0;
                    parts.forEach(
                      (part) => {
-                     let
+                     const
                        stat =
                          fs.statSync(
-                         part);
+                           part);
                      expect(
                        stat.size).toBeLessThanOrEqual(
                          splitSize);
@@ -169,8 +167,9 @@ describe(
     test(
       'should merge the splitted files',
       (done) => {
-        let
-          files = [];
+        const
+          files =
+            [];
         const
           base =
             __dirname + '/files/test1/sample.zip.sf-part';
@@ -181,7 +180,7 @@ describe(
         const
           input =
             __dirname +
-            '/files/test1/sample.zip'
+            '/files/test1/sample.zip';
         const
           dir =
             fs.readdirSync(
@@ -256,7 +255,7 @@ describe(
                        0;
                    parts.forEach(
                      (part) => {
-                       let
+                       const
                          stat =
                            fs.statSync(
                              part);
@@ -279,7 +278,7 @@ describe(
     test(
       'should merge the splitted files',
       (done) => {
-        let
+        const
           files =
             [];
         const
@@ -293,7 +292,7 @@ describe(
         const
           input =
           __dirname +
-          '/files/test2/sample.pdf'
+          '/files/test2/sample.pdf';
         const
           dir =
             fs.readdirSync(
@@ -381,7 +380,7 @@ describe(
                        0;
                    parts.forEach(
                      (part) => {
-                       let
+                       const
                          stat =
                            fs.statSync(
                              part);
@@ -391,7 +390,7 @@ describe(
                    expect(
                      totalPartsSize).toBe(
                        inputStat.size);
-                   let
+                   const
                      dirFiles =
                        fs.readdirSync(
                          outputFolder);

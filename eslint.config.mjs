@@ -28,7 +28,7 @@ import { defineConfig } from "eslint/config";
 export default defineConfig([
  { ignores: [
      "build/**",
-     "eslint.config.js"
+     "eslint.config.mjs"
    ],
    rules:
      { semi:

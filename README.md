@@ -59,14 +59,14 @@ which results in some respose if some.
 
 ```javascript
 _split_file(
-  _file,
-  _dest?) => Promise<string[]>
+  _input_file,
+  _output_dir?) => Promise<string[]>
 ```
 
 **Consumes**:
-- `_file`:
+- `_input_file`:
     Path to the file to split.
-- `_dest`:
+- `_output_dir`:
     Folder for output, defaults to `.` (current folder)
 
 **Produces**:
@@ -83,37 +83,51 @@ const
       'split-file');
 _split_file =
   _split_file_module._split_file;
+const
+  _input_file =
+    __dirname +
+    '/testfile.bin';
+const
+  _parts_amount =
+    3;
+const
+  _error_callback =
+    function (
+      _error) {
+      const
+        _log =
+          console.log;
+      _log(
+        'Error: ',
+        _error);
+    };
 _split_file(
-  __dirname + '/testfile.bin',
-  3)
+  _input_file,
+  _parts_amount)
   .then(
-    (names) => {
+    (_output_files) => {
       console.log(
-        names);
+        _output_files);
     })
   .catch(
-    (err) => {
-      console.log(
-        'Error: ',
-        err);
-    });
+    _error_callback);
 ```
 
 #### Splitting file with maximum bytes per part
 
 ```javascript
 _split_file_by_size(
-  _file,
+  _input_file,
   _size_max,
-  _dest?) => Promise<string[]>
+  _output_dir?) => Promise<string[]>
 ```
 
 **Consumes**:
-- `_file`:
+- `_input_file`:
     Path to the file to split.
 - `_size_max`:
     Max size of the splitted parts. (bytes)
-- `_dest`:
+- `_output_dir`:
     Folder for output, defaults to `.` (current folder)
 
 **Produces**:
@@ -130,20 +144,33 @@ const
       'split-file');
 _split_file_by_size =
   _split_file_module._split_file_by_size;
+const
+  _input_file =
+    __dirname +
+    '/testfile.bin';
+_size_max =
+  457000;
+const
+  _error_callback =
+    function (
+      _error) {
+      const
+        _log =
+          console.log;
+      _log(
+        'Error: ',
+        _error);
+    };
 _split_file_by_size(
-  __dirname + '/testfile.bin',
-  457000)
+  _input_file,
+  _size_max)
   .then(
-    (names) => {
+    (_output_files) => {
       console.log(
-        names);
+        _output_files);
     })
   .catch(
-    (err) => {
-      console.log(
-        'Error: ',
-        err);
-  });
+    _error_callback);
 ```
 
 #### Merge parts
@@ -155,7 +182,7 @@ _merge_files(
 ```
 
 **Consumes**:
-- `_names`:
+- `_input_files`:
     Input files, array with full part paths.
 - `_output_file`:
     Full path of the output file.
@@ -173,37 +200,57 @@ const
       'split-file');
 _merge_files =
   _split_file_module._merge_files;
-_files = [
-  __dirname + '/file_a',
-  __dirname + '/file_b'
-];
+const
+  _input_files = [
+    __dirname + '/file_a',
+    __dirname + '/file_b'
+  ];
+const
+  _output_file =
+    __dirname +
+    '/testfile-output.bin';
+const
+  _error_callback =
+    function (
+      _error) {
+      const
+        _log =
+          console.log;
+      _log(
+        'Error: ',
+        _error);
+    };
 _merge_files(
-  _files,
-  __dirname + '/testfile-output.bin')
+  _input_files,
+  _output_file)
   .then(
     () => {
       console.log(
         'Done!');
     })
   .catch(
-    (err) => {
-      console.log(
-        'Error: ',
-        err);
-    });
+    _error_callback);
 ```
 
-## CLI Tool
+## Command-line program
 
 ### Installation
 
-To use the module from the command-line you can install
-this package in your global context:
+To use the module from the command line you can install
+either use npm and install this package in your global context
+
 ```
 npm \
   -g \
   install \
     "split-file"
+```
+
+or just use GNU make
+
+```bash
+make \
+  install
 ```
 
 **Note:** You may need admin rights (`sudo`,
@@ -213,7 +260,12 @@ npm \
 
 The CLI tool works like you use it in your own package.
 
-```
+The manual can be accessed with `man split-file`.
+
+```bash
+split-file \
+  -h
+
 Usage:
 
   split-file

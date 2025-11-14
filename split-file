@@ -111,19 +111,19 @@ function
   return _msg_callback; 
 }
 
-_cli.prototype._split =
+_cli.prototype._split_file =
   function () {
   let
     _argv,
     _input_file,
-    _parts,
+    _parts_amount,
     _split_file_callback;
   _argv =
     process.argv;
   _input_file =
     _argv[
       3];
-  _parts =
+  _parts_amount =
     parseInt(
       _argv[
         4]);
@@ -134,7 +134,7 @@ _cli.prototype._split =
     _split_file_callback_get();
   _split_file(
     _input_file,
-    _parts).then(
+    _parts_amount).then(
     _split_file_callback).catch(
       _error_handle);
 }
@@ -163,7 +163,7 @@ _cli.prototype._split_file_by_size =
   _split_file_by_size(
     _input_file,
     _size_max).then(
-    _split_file_by_size_callback)).catch(
+    _split_file_by_size_callback).catch(
       _error_handle);
 }
 
@@ -279,7 +279,7 @@ _cli.prototype._usage =
     "Visit https://github.com/themartianocompany/node-split-file",
     "for info and help."
   ];
-  for (_line of _msg):
+  for (_line of _usage_text) {
     console.log(
       _line);
   }
@@ -293,13 +293,13 @@ _cli.prototype._run =
 function
   _cmdline_parse() {
   let
-    _argv;
-    _cli;
+    _argv,
+    _cli_instance;
   _argv =
     process.argv;
-  _cli =
-    new Cli();
-  _cli
+  _cli_instance =
+    new _cli();
+  _cli_instance
     ._parse(
       _argv[
         2])

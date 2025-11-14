@@ -10,37 +10,34 @@ const
   _file_name =
     "ahsi.js";
 const
-  _output = {
-    path:
+  _output =
+  { path:
       _output_dir,
     filename:
-      _file_name
-};
-const
-  _yargs_ignore = {
-    resourceRegExp:
-      /^yargs$/
-}
-const
-  _yargs_helpers_ignore = {
-    resourceRegExp:
-      /^yargs\/helpers$/
-}
-const
-  _webpack =
-    require(
-     "webpack");
-const
-  _ignore_plugin =
-    _webpack.IgnorePlugin; 
-const
-  _yargs_ignore_plugin =
-    new _ignore_plugin(
-          _yargs_ignore);
-const
-  _yargs_helpers_ignore_plugin =
-    new _ignore_plugin(
-          _yargs_helpers_ignore);
+      _file_name };
+// const
+//   _yargs_ignore =
+//     { resourceRegExp:
+//         /^yargs$/ };
+// const
+//   _yargs_helpers_ignore =
+//     { resourceRegExp:
+//         /^yargs\/helpers$/ };
+// const
+//   _webpack =
+//     require(
+//      "webpack");
+// const
+//   _ignore_plugin =
+//     _webpack.IgnorePlugin; 
+// const
+//   _yargs_ignore_plugin =
+//     new _ignore_plugin(
+//           _yargs_ignore);
+// const
+//   _yargs_helpers_ignore_plugin =
+//     new _ignore_plugin(
+//           _yargs_helpers_ignore);
 module.exports = {
   entry:
     './ahsi',
@@ -73,10 +70,10 @@ module.exports = {
         false
     },
   },
-  externals:
-    { yargs: 'yargs' },
-  plugins: [
-    _yargs_ignore_plugin,
-    _yargs_helpers_ignore_plugin
-  ]
+  // externals:
+  //   { yargs: 'yargs' },
+  // plugins: [
+  //   _yargs_ignore_plugin,
+  //   _yargs_helpers_ignore_plugin
+  // ]
 };
