@@ -407,7 +407,7 @@ _split_file.prototype._split_file_by_size =
 
 function
   _merge_files_read_write_stream_promise_get(
-    _output_file,
+    _input_file,
     _writer) {
   let
     _read_write_stream_promise_function,
@@ -420,7 +420,7 @@ function
       _reader;
     _reader =
       _read_stream_create(
-        _output_file,
+        _input_file,
         { encoding:
             null });
     _reader.pipe(
@@ -476,7 +476,7 @@ _split_file.prototype._merge_files =
     _tasks,
     _writer;
   _input_files_rejected =
-    _input_files_check(
+    _split_file.prototype._input_files_check(
       _input_files);
   if ( typeof _input_files_rejected !== 'undefined' ) {
     return _input_files_rejected;
@@ -487,12 +487,21 @@ _split_file.prototype._merge_files =
       { encoding:
           null,
       });
+  _map_series_function =
+    function (
+      _input_file) {
+    let
+      _merge_files_read_write_stream_promise;
+    _merge_files_read_write_stream_promise =
+      _merge_files_read_write_stream_promise_get(
+        _input_file,
+        _writer);
+    return _merge_files_read_write_stream_promise; 
+  }
   _tasks =
     _map_series(
       _input_files,
-      _merge_files_read_write_stream_promise_get(
-        _file,
-        _writer)).then(
+      _map_series_function).then(
       _merge_files_read_write_stream_callback_get(
         _output_file,
         _writer));

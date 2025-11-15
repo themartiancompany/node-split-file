@@ -31,7 +31,7 @@ const
     require(
       '../lib/split-file');
 _merge_files =
-  split_file_module.merge_files;
+  _split_file_module.merge_files;
 _split_file_by_size =
   _split_file_module.split_file_by_size;
 const
