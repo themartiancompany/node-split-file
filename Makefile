@@ -52,7 +52,7 @@ NPM_FILES=\
   "COPYING" \
   "AUTHORS.rst" \
   "$(_PROJECT)" \
-  "lib/$(_PROJECT)" \
+  "lib" \
   "package.json" \
   "index.html" \
   "serve.json" \
