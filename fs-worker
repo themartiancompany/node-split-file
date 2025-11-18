@@ -23,7 +23,7 @@
 
 const
   _fs =
-    require("happy-opfs");
+    require("opfs");
 _sync_agent =
   _fs.startSyncAgent;
 

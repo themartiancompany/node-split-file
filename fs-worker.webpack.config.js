@@ -7,19 +7,19 @@ const
     _path.resolve(
       __dirname);
 const
-  _file_name =
-    "fs-worker.js";
+  _output_file_name =
+    "./fs-worker.js";
 const
   _output = {
     path:
       _output_dir,
     filename:
-      _file_name
+      _output_file_name
 };
 
 module.exports = {
   entry:
-    'fs-worker',
+    './fs-worker',
   output:
     _output,
   optimization: {
@@ -29,10 +29,10 @@ module.exports = {
     fallback: {
       "fs":
         false,
-      "happy-opfs":
+      "opfs":
         _path.resolve(
           __dirname,
-          'node_modules/happy-opfs/dist/main.mjs'),
+          'node_modules/opfs/dist/main.mjs'),
       "path":
         false,
       "@std/path":

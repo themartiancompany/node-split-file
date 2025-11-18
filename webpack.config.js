@@ -8,7 +8,7 @@ const
       __dirname);
 const
   _file_name =
-    "ahsi.js";
+    "./split-file.js";
 const
   _output =
   { path:
@@ -40,7 +40,7 @@ const
 //           _yargs_helpers_ignore);
 module.exports = {
   entry:
-    './ahsi',
+    './split-file',
   output:
     _output,
   optimization: {
@@ -50,10 +50,10 @@ module.exports = {
     fallback: {
       "fs":
         false,
-      "happy-opfs":
+      "opfs":
         _path.resolve(
           __dirname,
-          'node_modules/happy-opfs/dist/main.mjs'),
+          'node_modules/opfs/dist/main.mjs'),
       "path":
         false,
       "stream":
@@ -62,10 +62,10 @@ module.exports = {
         _path.resolve(
           __dirname,
           'node_modules/@std/path/mod.js'),
-      "fs-worker":
-        _path.resolve(
-          __dirname,
-          'node_modules/crash-bash/crash/bash/fs-worker'),
+      // "fs-worker":
+      //   _path.resolve(
+      //     __dirname,
+      //     'node_modules/crash-bash/crash/bash/fs-worker'),
       "yargs":
         false,
       "yargs/helpers":

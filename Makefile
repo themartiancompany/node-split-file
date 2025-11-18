@@ -52,6 +52,7 @@ NPM_FILES=\
   "README.md" \
   "COPYING" \
   "AUTHORS.rst" \
+  "fs-worker" \
   "$(_PROJECT)" \
   "lib" \
   "package.json" \
@@ -126,9 +127,6 @@ build-npm:
 	  --config \
 	    "webpack.config.js" \
 	  --stats-error-details; \
-	rm \
-	  -rf \
-	  "node_modules"; \
 	npm \
 	  pack; \
 	mv \
