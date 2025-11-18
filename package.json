@@ -2,11 +2,11 @@
   "name":
     "@themartiancompany/split-file",
   "version":
-    "2.3.0",
+    "2.3.1",
   "private":
     false,
   "description":
-    "Splitting and merging files with NodeJS",
+    "Splitting and merging files with NodeJS.",
   "homepage":
     "https://github.com/themartiancompany/crash-js",
   "bugs": {
@@ -38,15 +38,16 @@
     "COPYING",
     "AUTHORS.rst",
     "README.md",
-    "bin",
-    "lib"
+    "libsplit-file",
+    "split-file",
+    "split-file.js"
   ],
   "bin": {
     "split-file":
       "./bin/split-file"
   },
   "main":
-    "./lib/split-file",
+    "./libsplit-file",
   "man":
     "./man/split-file.1",
   "repository": {

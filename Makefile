@@ -52,13 +52,9 @@ NPM_FILES=\
   "README.md" \
   "COPYING" \
   "AUTHORS.rst" \
-  "fs-worker" \
-  "$(_PROJECT)" \
-  "lib" \
+  "lib$(_PROJECT)" \
   "package.json" \
-  "index.html" \
-  "serve.json" \
-  "fs-worker.webpack.config.js" \
+  "$(_PROJECT)" \
   "webpack.config.js"
 
 all: build-man build-npm
@@ -79,11 +75,15 @@ install: install-scripts install-doc install-examples install-man
 install-scripts:
 
 	$(_INSTALL_EXE) \
-	  "$(_PROJECT)/$(_PROJECT)" \
-	  "$(BIN_DIR)/$(_PROJECT)"
-	$(_INSTALL_EXE) \
-	  "$(_PROJECT)/nodejs/$(_PROJECT)" \
+	  "$(_PROJECT)" \
 	  "$(LIB_DIR)/$(_PROJECT)"
+	$(_INSTALL_EXE) \
+	  "lib$(_PROJECT)" \
+	  "$(LIB_DIR)/lib$(_PROJECT)"
+	ln \
+	  -s \
+	  "$(PREFIX)/lib/$(_PROJECT)/$(_PROJECT)" \
+	  "$(BIN_DIR)/$(_PROJECT)"
 
 build-man:
 
@@ -119,12 +119,6 @@ build-npm:
 	  --mode \
 	    "production" \
 	  --config \
-	    "fs-worker.webpack.config.js" \
-	  --stats-error-details; \
-	webpack \
-	  --mode \
-	    "production" \
-	  --config \
 	    "webpack.config.js" \
 	  --stats-error-details; \
 	npm \
@@ -156,9 +150,6 @@ install-npm:
 	  "$(NODE_DIR)" \
 	  "$(LIB_DIR)" || \
 	true
-	$(_INSTALL_EXE) \
-	  "$(_PROJECT)/$(_PROJECT)" \
-	  "$(BIN_DIR)/$(_PROJECT)"
 
 publish-npm:
 

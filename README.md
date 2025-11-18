@@ -47,7 +47,7 @@ with the following command:
 npm \
   install \
     --save \
-    split-file
+    @themartiancompany/split-file
 ```
 
 ### Usage

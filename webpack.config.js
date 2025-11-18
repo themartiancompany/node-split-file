@@ -8,7 +8,7 @@ const
       __dirname);
 const
   _out_file_name =
-    "./split-file.js";
+    "./libsplit-file.js";
 const
   _output =
   { path:
@@ -17,7 +17,7 @@ const
       _out_file_name };
 module.exports = {
   entry:
-    './split-file',
+    './libsplit-file',
   output:
     _output,
   optimization: {
