@@ -75,8 +75,13 @@
       "^10.6.0"
   },
   "scripts": {
-    "build":
+    "prepare":
+      "npm install --save-dev",
+    "prebuild":
       "npm run lint",
+    "build":
+      "npx webpack --mode 'production' --config 'webpack.config.js' --stats-error-details",
+",
     "lint":
       "npx eslint .",
     "test":

@@ -114,13 +114,8 @@ build-npm:
 	      "$$(pwd)" \
 	      "version")"; \
 	npm \
-	  install; \
-	webpack \
-	  --mode \
-	    "production" \
-	  --config \
-	    "webpack.config.js" \
-	  --stats-error-details; \
+	  run \
+	    build; \
 	npm \
 	  pack; \
 	mv \
