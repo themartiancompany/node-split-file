@@ -26,23 +26,13 @@ module.exports = {
   resolve: {
     fallback: {
       "fs":
-        false,
-      "opfs":
         _path.resolve(
           __dirname,
-          'node_modules/opfs/dist/main.mjs'),
+          'node_modules/@themartiancompany/fs/fs'),
       "path":
-        false,
-      "stream":
-        false,
-      "@std/path":
         _path.resolve(
           __dirname,
           'node_modules/@std/path/mod.js'),
-      "yargs":
-        false,
-      "yargs/helpers":
-        false
     },
   },
 };

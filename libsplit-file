@@ -25,44 +25,10 @@
 //    You should have received a copy of the GNU Affero General Public License
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-function
-  _fs_module_get() {
-  let
-    _fs;
-  if ( typeof window === 'undefined' &&
-       ( typeof global !== 'undefined' && global.global === global ) &&
-       typeof __webpack_require__ !== 'function' ) {
-    _fs =
-      require(
-        "fs");
-  }
-  else {
-    _fs =
-      require("opfs");
-  }
-  return _fs;
-}
-
-function
-  _path_module_get() {
-  let
-    _path;
-  if ( typeof window === 'undefined' &&
-       ( typeof global !== 'undefined' && global.global === global ) &&
-       typeof __webpack_require__ !== 'function' ) {
-    _path =
-      require("path");
-  }
-  else {
-    _path =
-      require("@std/path");
-  }
-  return _path;
-}
-
 const
   _fs_module =
-    _fs_module_get();
+    require(
+      "fs");
 _write_stream_create =
   _fs_module.createWriteStream;
 _read_stream_create =
@@ -83,7 +49,8 @@ _map_series =
   _promise.mapSeries;
 const
   _path_module =
-    _path_module_get();
+    require(
+      "path");
 _basename =
   _path_module.basename;
 _resolve =
