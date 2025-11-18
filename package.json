@@ -1,6 +1,6 @@
 {
   "name":
-    "themartiancompany@split-file",
+    "@themartiancompany/split-file",
   "version":
     "2.3.0",
   "private":
@@ -38,12 +38,12 @@
     "COPYING",
     "AUTHORS.rst",
     "README.md",
-    "lib",
-    "split-file"
+    "bin",
+    "lib"
   ],
   "bin": {
     "split-file":
-      "./split-file"
+      "./bin/split-file"
   },
   "main":
     "./lib/split-file",
