@@ -38,7 +38,7 @@ function
   }
   else {
     _fs =
-      require("happy-opfs");
+      require("opfs");
   }
   return _fs;
 }
@@ -406,7 +406,7 @@ _split_file.prototype._split_file_by_size =
 };
 
 function
-  _merge_files_read_write_stream_promise_get(
+  _merge_files_read_write_stream_opfs_promise_get(
     _input_file,
     _writer) {
   let
@@ -474,14 +474,15 @@ _split_file.prototype._merge_files =
     _input_files_rejected,
     _map_series_function,
     _tasks,
-    _writer;
+    _writer_node;
   _input_files_rejected =
     _split_file.prototype._input_files_check(
       _input_files);
   if ( typeof _input_files_rejected !== 'undefined' ) {
     return _input_files_rejected;
   }
-  _writer =
+  // node
+  _writer_node =
     _write_stream_create(
       _output_file,
       { encoding:
@@ -490,21 +491,40 @@ _split_file.prototype._merge_files =
   _map_series_function =
     function (
       _input_file) {
-    let
-      _merge_files_read_write_stream_promise;
-    _merge_files_read_write_stream_promise =
-      _merge_files_read_write_stream_promise_get(
-        _input_file,
-        _writer);
-    return _merge_files_read_write_stream_promise; 
-  }
+      let
+        _merge_files_read_write_stream_promise;
+      _merge_files_read_write_stream_promise =
+        _merge_files_read_write_stream_node_promise_get(
+          _input_file,
+          _writer_node);
+      return _merge_files_read_write_stream_promise; 
+    };
+  // node
+  _writer_opfs =
+    _write_stream_create(
+      _output_file,
+      { encoding:
+          null,
+      });
+  // browser
+  _map_series_function =
+    function (
+      _input_file) {
+      let
+        _merge_files_read_write_stream_promise;
+      _merge_files_read_write_stream_promise =
+        _merge_files_read_write_stream_opfs_promise_get(
+          _input_file,
+          _writer_opfs);
+      return _merge_files_read_write_stream_promise; 
+    };
   _tasks =
     _map_series(
       _input_files,
       _map_series_function).then(
       _merge_files_read_write_stream_callback_get(
         _output_file,
-        _writer));
+        _writer_opfs));
   return _tasks;
 };
 

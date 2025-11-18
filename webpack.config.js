@@ -56,6 +56,8 @@ module.exports = {
           'node_modules/happy-opfs/dist/main.mjs'),
       "path":
         false,
+      "stream":
+        false,
       "@std/path":
         _path.resolve(
           __dirname,

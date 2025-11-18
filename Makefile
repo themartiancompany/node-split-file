@@ -21,6 +21,7 @@
 
 PREFIX ?= /usr/local
 _PROJECT=split-file
+_NAMESPACE=themartiancompany
 DOC_DIR=$(DESTDIR)$(PREFIX)/share/doc/$(_PROJECT)
 USR_DIR=$(DESTDIR)$(PREFIX)
 BIN_DIR=$(DESTDIR)$(PREFIX)/bin
@@ -131,7 +132,7 @@ build-npm:
 	npm \
 	  pack; \
 	mv \
-	  "$(_PROJECT)-$${_version}.tgz" \
+	  "$(_NAMESPACE)-$(_PROJECT)-$${_version}.tgz" \
 	  ".."
 
 install-npm:
@@ -144,12 +145,12 @@ install-npm:
 	_version="$$( \
 	  npm \
 	    view \
-	      "$$(pwd)/ahsi/nodejs" \
+	      "$$(pwd)" \
 	      "version")"; \
 	npm \
 	  install \
 	    "$${_npm_opts[@]}" \
-	    "$(_PROJECT)-$${_version}.tgz"; \
+	    "$(_NAMESPACE)-$(_PROJECT)-$${_version}.tgz"; \
 	$(_INSTALL_DIR) \
 	  "$(DESTDIR)$(PREFIX)/lib"; \
 	ln \
