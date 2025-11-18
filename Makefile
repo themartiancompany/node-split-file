@@ -52,6 +52,7 @@ NPM_FILES=\
   "README.md" \
   "COPYING" \
   "AUTHORS.rst" \
+  "eslint.config.mjs" \
   "lib$(_PROJECT)" \
   "package.json" \
   "$(_PROJECT)" \
@@ -113,6 +114,8 @@ build-npm:
 	    view \
 	      "$$(pwd)" \
 	      "version")"; \
+	npm \
+	  install; \
 	npm \
 	  run \
 	    build; \

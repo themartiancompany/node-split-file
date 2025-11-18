@@ -33,6 +33,8 @@ module.exports = {
         _path.resolve(
           __dirname,
           'node_modules/@std/path/mod.js'),
+      "web-worker":
+        false
     },
   },
 };

@@ -64,7 +64,7 @@
     "@std/path":
       "npm:@themartiancompany/std__path@^1.1.1",
     "@themartiancompany/fs":
-      "^0.0.1",
+      "^0.0.2",
     "eslint":
       "^9.32.0",
     "opfs":
@@ -75,13 +75,10 @@
       "^10.6.0"
   },
   "scripts": {
-    "prepare":
-      "npm install --save-dev",
     "prebuild":
       "npm run lint",
     "build":
       "npx webpack --mode 'production' --config 'webpack.config.js' --stats-error-details",
-",
     "lint":
       "npx eslint .",
     "test":
