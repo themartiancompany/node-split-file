@@ -1,0 +1,317 @@
+#!/usr/bin/env node
+
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+//    ----------------------------------------------------------------------
+//    Copyright © 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022,
+//                2023, 2024, 2025
+//                Tom Valk
+//    Copyright © 2025
+//                Pellegrino Prevete
+//
+//    All rights reserved
+//    ----------------------------------------------------------------------
+//
+//    This program is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU Affero General Public License as
+//    published by the Free Software Foundation, either version 3 of
+//    the License, or (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU Affero General Public License for more details.
+//
+//    You should have received a copy of the GNU Affero General Public License
+//    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+const
+  _split_file_module =
+    require(
+      '../lib/split-file');
+_merge_files =
+  _split_file_module._merge_files;
+_split_file =
+  _split_file_module._split_file;
+_split_file_by_size =
+  _split_file_module._split_file_by_size;
+var
+  _cli =
+    function () {};
+
+function
+  _global_variables() {
+  app_name =
+    "split-file";    
+}
+
+function
+  _error_handle(
+    _error) {
+    console.log(
+      'An error occured:');
+    console.log(
+      _error);
+}
+
+/**
+ * Parse cli option.
+ */
+_cli.prototype._parse =
+  function (
+    _option) {
+  this._option =
+    _option;
+  switch (
+    _option) {
+    case '-m':
+      this._method =
+        this._merge_files;
+      break;
+    case '-s':
+      this._method =
+        this._split_file;
+      break;
+    case '-x':
+      this._method =
+        _this._split_file_by_size;
+    case '-h':
+      this._method =
+        this._usage;
+      break;
+    default:
+      this._method =
+        this._usage;
+  }
+  return this;
+}
+
+/**
+ * Split command.
+ */
+
+function
+  _split_file_callback_get() {
+  let
+    _msg_callback;
+  _msg_callback =
+    function (
+      _output_files) {
+      let
+        _log,
+        _msg;
+      _log =
+        console.log;
+      _msg =
+        'Successfully splitted into: ' +
+        _output_files;
+      _log(
+        _msg);
+    };
+  return _msg_callback; 
+}
+
+_cli.prototype._split_file =
+  function () {
+  let
+    _argv,
+    _input_file,
+    _parts_amount,
+    _parts_amount_not_number,
+    _split_file_callback;
+  _argv =
+    process.argv;
+  _input_file =
+    _argv[
+      3];
+  _parts_amount =
+    parseInt(
+      _argv[
+        4]);
+  _parts_amount_not_number
+    isNaN(_parts_amount);
+  if ( _parts_amount_not_number ) {
+    return this._usage();
+  }
+  _split_file_callback =
+    _split_file_callback_get();
+  _split_file(
+    _input_file,
+    _parts_amount).then(
+    _split_file_callback).catch(
+      _error_handle);
+}
+
+_cli.prototype._split_file_by_size =
+  function() {
+    let
+      _argv,
+      _input_file,
+      _size_max,
+      _split_file_by_size_callback;
+    _argv =
+      process.argv;
+    _input_file =
+      _argv[
+        3];
+  _size_max =
+    parseInt(
+    _argv[
+      4]);
+  if ( isNaN(_size_max) ) {
+    return this._usage();
+  }
+  _split_file_by_size_callback =
+    _split_file_callback_get();
+  _split_file_by_size(
+    _input_file,
+    _size_max).then(
+    _split_file_by_size_callback).catch(
+      _error_handle);
+}
+
+/**
+ * Merge command.
+ */
+
+function
+  _merge_files_callback_get(
+    _output_file) {
+  let
+    _log,
+    _msg,
+    _msg_callback;
+  _log =
+    console.log;
+  _msg =
+    'Successfully merged the parts into ' +
+    _output_file;
+  _msg_callback =
+    function () {
+      _log(
+        _msg);
+    };
+  return _msg_callback; 
+}
+
+_cli.prototype._merge_files =
+  function () {
+    let
+      _argv,
+      _input_files,
+      _merge_files_callback,
+      _output_file;
+    _argv =
+       process.argv;
+    _input_files =
+      [];
+    _output_file =
+      _argv[
+        3];
+    for ( let _arg = 4;
+          _arg < _argv.length;
+          _arg++) {
+      _input_files.push(
+        _argv[
+          _arg]);
+    }
+    _merge_files_callback =
+      _merge_files_callback_get(
+        _output_file);
+    _merge_files(
+      _input_files,
+      _output_file).then(
+      _merge_files_callback).catch(
+        _error_handle);
+}
+
+/**
+ * Usage.
+ */
+
+_cli.prototype._usage =
+  function () {
+  let
+    _line,
+    _usage_text;
+  _usage_text = [
+    "",
+    "Splitting and merging files in Node.js and in the browser using OPFS.",
+    "",
+    "Usage:",
+    "  split-file",
+    "    <option>",
+    "    [arguments]",
+    "",
+    "  options:",
+    "     -s                     Split the input file in",
+    "       <input>              the given number of parts.",
+    "       <parts-amount>",
+    "",
+    "     -x",
+    "       <input>",
+    "       <size-max>           Split the input file into",
+    "                            multiple parts with maximum",
+    "                            file size of max_size bytes.",
+    "",
+    "     -m                     Merge the given parts into",
+    "       <output>             the output file.",
+    "       [input-files]",
+    "",
+    "     -h                     Display help.",
+    "",
+    "  examples:",
+    "",
+    "    split-file \\",
+    "      -s \\",
+    "        \"input.bin\" \\",
+    "        5",
+    "",
+    "    split-file \\",
+    "      -x \\",
+    "        \"input.bin\"\\",
+    "        457000",
+    "",
+    "    split-file \\",
+    "      -m \\",
+    "        \"output.bin\"",
+    "        \"part1\" \"part2\" ...",
+    "",
+    "NPM Module '@themartiancompany/split-file'",
+    "by Tom Valk and Pellegrino Prevete.",
+    "",
+    "Visit https://github.com/themartianocompany/node-split-file",
+    "for info and help."
+  ];
+  for (_line of _usage_text) {
+    console.log(
+      _line);
+  }
+}
+
+_cli.prototype._run =
+  function () {
+    return this._method();
+}
+
+function
+  _cmdline_parse() {
+  let
+    _argv,
+    _cli_instance;
+  _argv =
+    process.argv;
+  _cli_instance =
+    new _cli();
+  _cli_instance
+    ._parse(
+      _argv[
+        2])
+    ._run();
+}
+
+_global_variables();
+
+if (require.main === module) {
+  _cmdline_parse();
+}
