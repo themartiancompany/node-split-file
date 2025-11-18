@@ -25,18 +25,10 @@
 
 # Split File
 
-[![Build Status](
-     https://travis-ci.org/tomvlk/node-split-file.svg?branch=master)](
-       https://travis-ci.org/tomvlk/node-split-file)
-
 Split and merge file in multiple parts.
 Splittable with number of parts or maximum bytes per part.
 
 It works both in Node.js and in web browsers.
-
-## Programmatically usage
-This section contains information on how to use the
-`split-file` module in your code.
 
 ### Installation
 
