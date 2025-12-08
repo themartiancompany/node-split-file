@@ -39,6 +39,7 @@
     "AUTHORS.rst",
     "README.md",
     "libsplit-file",
+    "man",
     "split-file",
     "split-file.js"
   ],
