@@ -102,7 +102,7 @@ build-npm:
 	  "build/man"
 	rst2man \
 	  "man/$(_PROJECT).1.rst" \
-	  "build/$(_PROJECT).1"
+	  "build/man/$(_PROJECT).1"
 	cp \
 	  -r \
 	  $(NPM_FILES) \
