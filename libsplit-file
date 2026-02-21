@@ -397,7 +397,7 @@ _split_file.prototype._split_file_by_size =
       _output_dir);
   _split =
     _stat_promisified(
-      _file).then(
+      _input_file).then(
         _split_file_by_size_callback);
 };
 
