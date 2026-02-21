@@ -268,8 +268,9 @@ _split_file.prototype._split_file_callback_get =
 _split_file.prototype._split_file_by_size_callback_get =
   function (
       _input_file,
-      _parts_amount,
-      _output_dir) {
+      _size_max,
+      _output_dir,
+      _parts_amount) {
     let
       _split_file_by_size_callback;
     _split_file_by_size_callback =
@@ -393,8 +394,9 @@ _split_file.prototype._split_file_by_size =
   _split_file_by_size_callback =
     _split_file.prototype._split_file_by_size_callback_get(
       _input_file,
-      _parts_amount,
-      _output_dir);
+      _size_max,
+      _output_dir,
+      _parts_amount);
   _split =
     _stat_promisified(
       _input_file).then(
