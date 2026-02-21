@@ -298,7 +298,7 @@ _split_file.prototype._split_file_by_size_callback_get =
           _round(
             _size_max);
         _split_size_rejected =
-          _split_file.prototoype._split_size_check(
+          _split_file.prototype._split_size_check(
             _split_size);
         if ( typeof _split_size_rejected !== 'undefined' ) {
           return _split_size_rejected;
