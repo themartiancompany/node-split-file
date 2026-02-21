@@ -317,7 +317,7 @@ _split_file.prototype._split_file_by_size_callback_get =
                 _partition * _split_size,
               // Set total ending position
               end:
-                ( _partition * _split_size ) + split_size };
+                ( _partition * _split_size ) + _split_size };
         }
         // recalculate the size of the last chunk
         _target_partitions[
@@ -594,7 +594,7 @@ function
       // etc.
       _suffix_length =
         String(
-          _partition_info.length).length;
+          _target_partitions.length).length;
       // initial part number
       // ex. '0', '00', '000', etc.
       _suffix_current = "";
