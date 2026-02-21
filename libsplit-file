@@ -383,6 +383,7 @@ _split_file.prototype._split_file_by_size =
     _size_max,
     _output_dir) {
   let
+    _parts_amount,
     _split,
     _split_file_by_size_callback,
     _stat_promisified;
