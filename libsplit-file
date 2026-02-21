@@ -306,7 +306,7 @@ _split_file.prototype._split_file_by_size_callback_get =
         _target_partitions =
           [];
         for ( let _partition = 0;
-              _partition < _parts;
+              _partition < _parts_amount;
               _partition++) {
           _target_partitions[
             _partition] =
