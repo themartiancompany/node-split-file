@@ -2,28 +2,33 @@
 
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-//    ----------------------------------------------------------------------
-//    Copyright © 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022,
-//                2023, 2024, 2025
-//                Tom Valk
-//    Copyright © 2025
-//                Pellegrino Prevete
-//
-//    All rights reserved
-//    ----------------------------------------------------------------------
-//
-//    This program is free software: you can redistribute it and/or modify
-//    it under the terms of the GNU Affero General Public License as
-//    published by the Free Software Foundation, either version 3 of
-//    the License, or (at your option) any later version.
-//
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU Affero General Public License for more details.
-//
-//    You should have received a copy of the GNU Affero General Public License
-//    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+/**    ----------------------------------------------------------------------
+ *     libtmcsplit
+ *     ----------------------------------------------------------------------
+ *     Copyright ©
+ *       Tom Valk
+ *         2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022,
+ *         2023, 2024, 2025
+ *       Pellegrino Prevete
+ *         2024, 2025, 2026
+ * 
+ *     All rights reserved
+ *     ----------------------------------------------------------------------
+ * 
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ * 
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ * 
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
 const
   _fs_module =
@@ -237,8 +242,9 @@ _split_file.prototype._split_file_callback_get =
 _split_file.prototype._split_file_by_size_callback_get =
   function (
       _input_file,
-      _parts_amount,
-      _output_dir) {
+      _size_max,
+      _output_dir,
+      _parts_amount) {
     let
       _split_file_by_size_callback;
     _split_file_by_size_callback =
@@ -266,7 +272,7 @@ _split_file.prototype._split_file_by_size_callback_get =
           _round(
             _size_max);
         _split_size_rejected =
-          _split_file.prototoype._split_size_check(
+          _split_file.prototype._split_size_check(
             _split_size);
         if ( typeof _split_size_rejected !== 'undefined' ) {
           return _split_size_rejected;
@@ -275,7 +281,7 @@ _split_file.prototype._split_file_by_size_callback_get =
         _target_partitions =
           [];
         for ( let _partition = 0;
-              _partition < _parts;
+              _partition < _parts_amount;
               _partition++) {
           _target_partitions[
             _partition] =
@@ -286,7 +292,7 @@ _split_file.prototype._split_file_by_size_callback_get =
                 _partition * _split_size,
               // Set total ending position
               end:
-                ( _partition * _split_size ) + split_size };
+                ( _partition * _split_size ) + _split_size };
         }
         // recalculate the size of the last chunk
         _target_partitions[
@@ -357,6 +363,7 @@ _split_file.prototype._split_file_by_size =
     _size_max,
     _output_dir) {
   let
+    _parts_amount,
     _split,
     _split_file_by_size_callback,
     _stat_promisified;
@@ -366,11 +373,12 @@ _split_file.prototype._split_file_by_size =
   _split_file_by_size_callback =
     _split_file.prototype._split_file_by_size_callback_get(
       _input_file,
-      _parts_amount,
-      _output_dir);
+      _size_max,
+      _output_dir,
+      _parts_amount);
   _split =
     _stat_promisified(
-      _file).then(
+      _input_file).then(
         _split_file_by_size_callback);
 };
 
@@ -565,7 +573,7 @@ function
       // etc.
       _suffix_length =
         String(
-          _partition_info.length).length;
+          _target_partitions.length).length;
       // initial part number
       // ex. '0', '00', '000', etc.
       _suffix_current = "";
