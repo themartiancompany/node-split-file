@@ -122,6 +122,11 @@ build-npm:
 	  fix || \
 	true; \
 	npm \
+	  audit \
+	  fix \
+	  --force || \
+	true; \
+	npm \
 	  run \
 	    build; \
 	npm \
