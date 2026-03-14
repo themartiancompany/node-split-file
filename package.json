@@ -73,9 +73,7 @@
     "jest":
       "^27.5.1",
     "mocha":
-      "^11.7.5",
-    "serialize-javascript":
-      "^7.0.4"
+      "^11.7.5"
   },
   "scripts": {
     "prebuild":
