@@ -172,7 +172,8 @@ _split_file.prototype._split_file_callback_get =
   function (
     _input_file,
     _parts_amount,
-    _output_dir) {
+    _output_dir,
+    _target_partitions) {
     let
       _split_file_callback;
     _split_file_callback =
@@ -180,7 +181,6 @@ _split_file.prototype._split_file_callback_get =
         _stat_out) {
         let
           _input_file_rejected,
-          _target_partitions,
           _split_size,
           _split_size_last,
           _split_size_rejected,
@@ -206,9 +206,6 @@ _split_file.prototype._split_file_callback_get =
         // from the others because it uses scrap value.
         _split_size_last =
           _split_size + ( _size_total % _parts_amount );
-        // Define the _partition_info:
-        _target_partitions =
-          [];
         // Iterate on the parts
         for ( let _partition = 0;
               _partition < _parts_amount;
@@ -274,6 +271,7 @@ _split_file.prototype._split_file_by_size_callback_get =
         if ( typeof _split_size_rejected !== 'undefined' ) {
           return _split_size_rejected;
         }
+        // Define the _partition_info:
         _target_partitions =
           [];
         for ( let _partition = 0;
@@ -321,7 +319,10 @@ _split_file.prototype._split_file =
     _rejection,
     _split_file_callback,
     _split_file_promise,
-    _stat_promisified;
+    _stat_promisified,
+    _target_partitions;
+  _target_partitions =
+    [];
   _parts_rejected =
     _split_file.prototype._parts_amount_check(
       _parts_amount);
@@ -335,7 +336,8 @@ _split_file.prototype._split_file =
     _split_file.prototype._split_file_callback_get(
       _input_file,
       _parts_amount,
-      _output_dir);
+      _output_dir,
+      _target_partitions);
   _split_file_promise =
     _stat_promisified(
       _input_file).then(
