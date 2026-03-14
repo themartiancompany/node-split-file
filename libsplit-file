@@ -537,6 +537,7 @@ function
   _split_file_read_write_stream_promise_get(
     _input_file,
     _output_dir,
+    _target_partitions,
     _partition_info,
     _output_files) {
   let
@@ -671,6 +672,7 @@ _split_file.prototype._split_file_main =
             _split_file_read_write_stream_promise_get(
               _input_file,
               _output_dir,
+              _target_partitions,
               _partition_info,
               _output_files);
         return _split_file_read_write_stream_promise;
