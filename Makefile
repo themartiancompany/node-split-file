@@ -115,7 +115,12 @@ build-npm:
 	      "$$(pwd)" \
 	      "version")"; \
 	npm \
-	  install; \
+	  install \
+	  "$${PWD}"; \
+	npm \
+	  audit \
+	  fix || \
+	true; \
 	npm \
 	  run \
 	    build; \
