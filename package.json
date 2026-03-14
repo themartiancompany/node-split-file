@@ -67,7 +67,7 @@
     "@themartiancompany/fs":
       "^0.0.2",
     "eslint":
-      "^9.32.0",
+      "^10.0.3",
     "opfs":
       "npm:@themartiancompany/opfs@^2.0.3",
     "jest":
