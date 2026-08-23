@@ -32,36 +32,46 @@
 
 const
   _fs_module =
-    require(
+    await import(
       "fs");
-_write_stream_create =
-  _fs_module.createWriteStream;
-_read_stream_create =
-  _fs_module.createReadStream;
-_stat =
-  _fs_module.stat;
+const
+  _write_stream_create =
+    _fs_module.createWriteStream;
+const
+  _read_stream_create =
+    _fs_module.createReadStream;
+const
+  _stat =
+    _fs_module.stat;
 const
   _promise =
-    require(
+    await import(
       "bluebird");
-_promise_reject =
-  _promise.reject;
-_promise_resolve =
-  _promise.resolve;
-_promisify =
-  _promise.promisify;
-_map_series =
-  _promise.mapSeries;
+const
+  _promise_reject =
+    _promise.reject;
+const
+  _promise_resolve =
+    _promise.resolve;
+const
+  _promisify =
+    _promise.promisify;
+const
+  _map_series =
+    _promise.mapSeries;
 const
   _path_module =
-    require(
+    await import(
       "path");
+const
 _basename =
   _path_module.basename;
+const
 _resolve =
   _path_module.resolve;
-resolve =
-  _resolve;
+const
+  resolve =
+    _resolve;
 const
   _ceil =
     Math.ceil;
@@ -687,5 +697,15 @@ _split_file.prototype._split_file_main =
   return _tasks;
 };
 
-module.exports =
-  new _split_file();
+// Common Javascript exports
+
+const
+  _split_file_export =
+    new _split_file();
+
+// ES6 Modules export
+
+export default _split_file_export;
+
+// module.exports =
+//   new _split_file();
