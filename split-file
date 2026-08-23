@@ -31,7 +31,7 @@
 
 const
   _split_file_module =
-    require(
+    await import(
       './libsplit-file');
 _merge_files =
   _split_file_module._merge_files;

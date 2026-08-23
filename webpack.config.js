@@ -30,12 +30,15 @@ const
     require(
       'path');
 const
+  _project =
+    "split-file";
+const
   _output_dir =
     _path.resolve(
       __dirname);
 const
   _out_file_name =
-    "./libsplit-file.js";
+    `./lib${_project}.js`;
 const
   _output =
   { path:
@@ -44,7 +47,7 @@ const
       _out_file_name };
 module.exports = {
   entry:
-    './libsplit-file',
+    `./lib${_project}`,
   output:
     _output,
   optimization: {
@@ -55,7 +58,7 @@ module.exports = {
       "fs":
         _path.resolve(
           __dirname,
-          'node_modules/@themartiancompany/fs/fs'),
+          'node_modules/tmcfs/fs'),
       "path":
         _path.resolve(
           __dirname,

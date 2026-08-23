@@ -23,16 +23,47 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import js from "@eslint/js";
+import globals from "globals";
 import { defineConfig } from "eslint/config";
 
+const
+  _project =
+    "fs";
+const
+  _ignores = [
+    "build/**",
+    "dist/**",
+    `**/${_project}-worker.js`,
+    `**/*.${_project}-worker.js`,
+    `**/${_project}.js`,
+    `**/*.${_project}.js`,
+    "eslint.config.js"
+  ];
 export default defineConfig([
- { ignores: [
-     "build/**",
-     "eslint.config.mjs"
-   ],
+ { ignores:
+     _ignores,
    rules:
      { semi:
          "error",
        "prefer-const":
-         "error" } },
+         "error" },
+   files:
+     [ "**/*.{js,mjs,cjs}",
+       `**/${_project}` ],
+   plugins:
+     { js },
+   extends:
+     [ "js/recommended" ],
+   languageOptions:
+     { globals:
+         {  ...globals.browser,
+            ...globals.node} } },
+ { ignores:
+     _ignores,
+   files:
+     [ "**/*.{cjs,js}", ],
+   languageOptions:
+     { sourceType:
+         "commonjs" } },
 ]);
