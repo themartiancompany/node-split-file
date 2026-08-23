@@ -2,7 +2,7 @@
   "name":
     "@themartiancompany/split-file",
   "version":
-    "2.3.17",
+    "2.3.18",
   "private":
     false,
   "description":
@@ -68,7 +68,7 @@
   },
   "devDependencies": {
     "crash-js-webpack":
-      "^0.0.56",
+      "^0.0.58",
     "debug":
       "^4.4.3",
     "diff":

@@ -4,7 +4,7 @@
 //    ----------------------------------------------------------------------
 //    Copyright © 2024, 2025
 //                Jiang Jie
-//    Copyright © 2025
+//    Copyright © 2025, 2026
 //                Pellegrino Prevete
 //
 //    All rights reserved
@@ -29,7 +29,7 @@ import { defineConfig } from "eslint/config";
 
 const
   _project =
-    "fs";
+    "split-file";
 const
   _ignores = [
     "build/**",
@@ -38,6 +38,8 @@ const
     `**/*.${_project}-worker.js`,
     `**/${_project}.js`,
     `**/*.${_project}.js`,
+    `**/lib${_project}.js`,
+    `**/*.lib${_project}.js`,
     "eslint.config.js"
   ];
 export default defineConfig([
