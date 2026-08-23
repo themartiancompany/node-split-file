@@ -29,6 +29,9 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+/* eslint-disable
+     no-unused-vars */
+
 const
   _split_file_module =
     await import(
@@ -95,6 +98,7 @@ _cli.prototype._parse =
       case '-x':
         this._method =
           this._split_file_by_size;
+        break;
       case '-h':
         this._method =
           this._usage;
@@ -112,21 +116,20 @@ _cli.prototype._parse =
 
 function
   _split_file_callback_get() {
-  let
-    _msg_callback;
-  _msg_callback =
-    function (
-      _output_files) {
-      const
-        _log =
-          console.log;
-      const
-        _msg =
-          'Successfully splitted into: ' +
-          _output_files;
-      _log(
-        _msg);
-    };
+  const
+    _msg_callback =
+      function (
+        _output_files) {
+        const
+          _log =
+            console.log;
+        const
+          _msg =
+            'Successfully splitted into: ' +
+            _output_files;
+        _log(
+          _msg);
+      };
   return _msg_callback; 
 }
 
