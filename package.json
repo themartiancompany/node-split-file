@@ -42,6 +42,7 @@
     "libsplit-file",
     "man",
     "split-file"
+    "package.json"
   ],
   "bin": {
     "split-file":
