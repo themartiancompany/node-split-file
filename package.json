@@ -2,7 +2,7 @@
   "name":
     "@themartiancompany/split-file",
   "version":
-    "2.3.16",
+    "2.3.17",
   "private":
     false,
   "description":
@@ -67,6 +67,8 @@
   "devDependencies": {
     "crash-js-webpack":
       "^0.0.56",
+    "debug":
+      "^4.4.3",
     "diff":
       "^9.0.0",
     "eslint":
@@ -89,12 +91,16 @@
       "^0.0.14"
   },
   "overrides": {
+    "debug":
+      "^4.4.3",
     "diff":
       "^9.0.0",
     "glob":
       "^13.0.6",
     "inflight":
-      "npm:lru-cache@^11.5.2"
+      "npm:lru-cache@^11.5.2",
+    "serialize-javascript":
+      "^7.1.0"
   },
   "scripts": {
     "prebuild":
