@@ -39,10 +39,12 @@
     "AUTHORS.rst",
     "README.md",
     "dist",
+    "eslint-config.mjs",
     "libsplit-file",
     "man",
     "split-file",
-    "package.json"
+    "package.json",
+    "webpack.config.cjs"
   ],
   "bin": {
     "split-file":
@@ -88,7 +90,11 @@
     "serialize-javascript":
       "^7.1.0",
     "safely-serve":
-      "^0.0.14"
+      "^0.0.14",
+    "webpack":
+      "^5.109.2",
+    "webpack-cli":
+      "^7.2.2"
   },
   "overrides": {
     "debug":
@@ -106,11 +112,11 @@
     "prebuild":
       "npm run lint",
     "build":
-      "npm run fs-worker; npm run build-lib",
+      "npm run build-fs-worker; npm run build-lib",
     "build-fs-worker":
       "npx webpack --mode 'production' --config 'fs-worker.webpack.config.cjs' --stats-error-details && for _target in 'libsplit-file'; do cp 'fs-worker.js' 'dist/'${_target}; done",
     "build-lib":
-      "npx webpack --mode 'production' --config 'webpack.config.js' --stats-error-details && cp 'libsplitfile.js' 'dist/libsplitfile'",
+      "npx webpack --mode 'production' --config 'webpack.config.cjs' --stats-error-details && cp 'libsplitfile.js' 'dist/libsplitfile'",
     "lint":
       "npx eslint .",
     "test":
