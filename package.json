@@ -66,14 +66,34 @@
   "devDependencies": {
     "crash-js-webpack":
       "^0.0.56",
+    "diff":
+      "^9.0.0",
     "eslint":
-      "^10.3.0",
+      "^10.9.0",
+    "@eslint/js":
+      "^10.0.1",
+    "glob":
+      "^13.0.6",
+    "inflight":
+      "npm:lru-cache@^11.5.2",
     "jest":
-      "^27.5.1",
+      "^30.4.2",
     "mocha":
-      "^11.7.5",
+      "^11.8.0",
+    "globals":
+      "^17.3.0",
+    "serialize-javascript":
+      "^7.1.0",
     "safely-serve":
-      "^0.0.16"
+      "^0.0.14"
+  },
+  "overrides": {
+    "diff":
+      "^9.0.0",
+    "glob":
+      "^13.0.6",
+    "inflight":
+      "npm:lru-cache@^11.5.2"
   },
   "scripts": {
     "prebuild":

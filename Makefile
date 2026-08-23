@@ -1,33 +1,39 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-#    ----------------------------------------------------------------------
+#    -----------------------------------------------------
 #    Copyright © 2024, 2025, 2026  Pellegrino Prevete
 #
 #    All rights reserved
-#    ----------------------------------------------------------------------
+#    -----------------------------------------------------
 #
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
+#    This program is free software: you can redistribute
+#    it and/or modify it under the terms of the
+#    GNU Affero General Public License as published by
+#    the Free Software Foundation, either version 3 of
+#    the License, or (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
+#    This program is distributed in the hope that it
+#    will be useful, but WITHOUT ANY WARRANTY;
+#    without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#    See the GNU Affero General Public License for
+#    more details.
 #
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#    You should have received a copy of the
+#    GNU Affero General Public License
+#    along with this program.
+#    If not, see <https://www.gnu.org/licenses/>.
 
 PREFIX ?= /usr/local
 _PROJECT=split-file
 _NAMESPACE=themartiancompany
+_PROJECT_NPM=$(_PROJECT)
 DOC_DIR=$(DESTDIR)$(PREFIX)/share/doc/$(_PROJECT)
 USR_DIR=$(DESTDIR)$(PREFIX)
 BIN_DIR=$(DESTDIR)$(PREFIX)/bin
 LIB_DIR=$(DESTDIR)$(PREFIX)/lib/$(_PROJECT)
 MAN_DIR?=$(DESTDIR)$(PREFIX)/share/man
-NODE_DIR=$(PREFIX)/lib/node_modules/$(_PROJECT)
+NODE_DIR=$(DESTDIR)$(PREFIX)/lib/node_modules/$(_PROJECT)
 BUILD_NPM_DIR=build
 
 _INSTALL_FILE=\
@@ -52,39 +58,33 @@ NPM_FILES=\
   "README.md" \
   "COPYING" \
   "AUTHORS.rst" \
+  "dist" \
   "eslint.config.mjs" \
+  "fs-worker.webpack.config.cjs" \
   "lib$(_PROJECT)" \
   "package.json" \
   "$(_PROJECT)" \
   "webpack.config.js"
 
-all: build-man build-npm
+all: build
 
-check: eslint
+build:
 
-eslint:
-
-	npm \
-	  install \
-	  --save-dev; \
-	npx \
-	  eslint \
-	    "."
-
-install: install-scripts install-doc install-examples install-man
-
-install-scripts:
-
-	$(_INSTALL_EXE) \
-	  "$(_PROJECT)" \
-	  "$(LIB_DIR)/$(_PROJECT)"
-	$(_INSTALL_EXE) \
-	  "lib$(_PROJECT)" \
-	  "$(LIB_DIR)/lib$(_PROJECT)"
-	ln \
-	  -s \
-	  "$(PREFIX)/lib/$(_PROJECT)/$(_PROJECT)" \
-	  "$(BIN_DIR)/$(_PROJECT)"
+	if [[ "$(_NPM)" == "false" ]]; then \
+	  make \
+	    build-webpack; \
+	elif [[ "$(_NPM)" == "true" ]]; then \
+	  make \
+	    build-npm; \
+	else \
+	  echo \
+	   "Invalid value for '$(_NPM)'." \
+	   1>&2; \
+	   exit \
+	     1; \
+	fi
+	make \
+	  build-man
 
 build-man:
 
@@ -112,7 +112,7 @@ build-npm:
 	_version="$$( \
 	  npm \
 	    view \
-	      "$$(pwd)" \
+	      "$${PWD}" \
 	      "version")"; \
 	npm \
 	  install \
@@ -135,6 +135,118 @@ build-npm:
 	  "$(_NAMESPACE)-$(_PROJECT)-$${_version}.tgz" \
 	  ".."
 
+build-webpack:
+
+	cp \
+	  -r \
+	  "$(_MODULE)" \
+	  "dist" \
+	  "fs-worker.webpack.config.cjs" \
+	  "webpack.config.cjs" \
+	  "build"
+	_webpack=( \
+	  "$$(command \
+	        -v \
+	        "webpack")"; \
+	if [[ "${_webpack}" == "" ]]; then \
+	  _webpack=(
+	    npx
+	      webpack); \
+	fi; \
+	cd \
+	  "build"; \
+	if [[ ! -e "fs-worker.js" ]]; then \
+          "${_webpack[@]}" \
+	    --mode \
+	      'production' \
+	    --config \
+	    'fs-worker.webpack.config.cjs' \
+	    --stats-error-details; \
+	fi; \
+	cp \
+	  'fs-worker.js' \
+	  'dist/$(_MODULE)/fs-worker.js'; \
+	cp \
+	  'fs-worker.js' \
+	  'dist/$(_MODULE)/fs-worker.js'; \
+	if [[ ! -e "$(_MODULE).js" ]]; then \
+          "${_webpack[@]}" \
+	    --mode \
+	      'production' \
+	    --config \
+	      'webpack.config.cjs' \
+	    --stats-error-details; \
+	fi; \
+	cp \
+	  "$(_MODULE).js" \
+	  "dist/$(_MODULE)/$(_MODULE).js"
+
+check: eslint
+
+eslint:
+
+	npm \
+	  install \
+	  --save-dev; \
+	npx \
+	  eslint \
+	    "."
+
+install: install-scripts install-doc install-examples install-man
+
+install-scripts:
+
+	if [[ "$(_NPM)" == "false" ]]; then \
+	  $(_INSTALL_DIR) \
+	    "$(LIB_DIR)/nodejs"; \
+	  cp \
+	    -r \
+	    $$(printf \
+	         "$${PWD}/%s " \
+	         $$(cat \
+	              "$${PWD}/package.json" | \
+	              jq \
+	                --raw-output \
+	                '.files[]')) \
+	    "$(LIB_DIR)/nodejs"; \
+	  if [[ ! -s "$(LIB_DIR)/nodejs/node_modules" ]]; then \
+	    $(_MAKE_LINK) \
+	      "$(DESTDIR)$(PREFIX)/lib/node_modules" \
+	      "$(LIB_DIR)/nodejs/node_modules"; \
+	  fi; \
+	  rm \
+	    -rf \
+            "$(NODE_DIR)" \
+	    "$(DESTDIR)$(PREFIX)/lib/node_modules/$(_PROJECT)"; \
+	  $(_INSTALL_DIR) \
+	    "$$(dirname \
+	          "$(NODE_DIR)")"; \
+	  if [[ ! -s "$(NODE_DIR)" ]]; then \
+	    $(_MAKE_LINK) \
+	      "$(LIB_DIR)/nodejs" \
+	      "$(NODE_DIR)" || \
+	      true; \
+	  fi; \
+	  if [[ ! -s "$(DESTDIR)$(PREFIX)/lib/node_modules/$(_PROJECT)" ]]; then \
+	    $(_MAKE_LINK) \
+	      "$(LIB_DIR)/nodejs" \
+	      "$(DESTDIR)$(PREFIX)/lib/node_modules/$(_PROJECT)" || \
+	      true; \
+	  fi; \
+	elif [[ "$(_NPM)" == "true" ]]; then \
+	  make \
+	    install-npm; \
+	  $(_MAKE_LINK) \
+	   "$(PREFIX)/lib/node_modules/@$(_NAMESPACE)/$(_MODULE)" \
+	   "$(LIB_DIR)" || \
+	   true; \
+	  $(_MAKE_LINK) \
+	    "$(PREFIX)/lib/node_modules/@$(_NAMESPACE)/$(_MODULE)" \
+	    "$(DESTDIR)$(PREFIX)/lib/node_modules/$(_PROJECT)" || \
+	  true; \
+	fi
+
+
 install-npm:
 
 	_npm_opts=( \
@@ -145,7 +257,7 @@ install-npm:
 	_version="$$( \
 	  npm \
 	    view \
-	      "$$(pwd)" \
+	      "$${PWD}" \
 	      "version")"; \
 	npm \
 	  install \
@@ -155,7 +267,7 @@ install-npm:
 	  "$(DESTDIR)$(PREFIX)/lib"; \
 	ln \
 	  -s \
-	  "$(NODE_DIR)" \
+          "$(PREFIX)/lib/node_modules/$(_PROJECT)
 	  "$(LIB_DIR)" || \
 	true
 
@@ -183,4 +295,6 @@ install-man:
 	  "man/$(_PROJECT).1.rst" \
 	  "$(MAN_DIR)/man1/$(_PROJECT).1"
 
-.PHONY: check build-man build-npm install install-doc install-man install-npm install-scripts shellcheck
+
+
+.PHONY: build build-man build-npm build-webpack check install install-doc install-man install-npm install-scripts shellcheck uninstall-man uninstall-scripts
