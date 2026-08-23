@@ -71,7 +71,7 @@ NPM_FILES=\
   "lib$(_PROJECT)" \
   "package.json" \
   "$(_PROJECT)" \
-  "webpack.config.js"
+  "webpack.config.cjs"
 
 all: build
 
