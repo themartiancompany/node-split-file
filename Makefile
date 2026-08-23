@@ -24,6 +24,7 @@
 #    along with this program.
 #    If not, see <https://www.gnu.org/licenses/>.
 
+_NPM ?= false
 PREFIX ?= /usr/local
 _PROJECT=split-file
 _NAMESPACE=themartiancompany
@@ -295,6 +296,16 @@ install-man:
 	  "man/$(_PROJECT).1.rst" \
 	  "$(MAN_DIR)/man1/$(_PROJECT).1"
 
+uninstall-scripts:
 
+	rm \
+	  -rf \
+	  "$(LIB_DIR)" \
+	  "$(NODE_DIR)"
+
+uninstall-man:
+
+	rm \
+	  "$(MAN_DIR)/man1/$(_PROJECT).1"
 
 .PHONY: build build-man build-npm build-webpack check install install-doc install-man install-npm install-scripts shellcheck uninstall-man uninstall-scripts
