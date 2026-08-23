@@ -34,8 +34,8 @@ const
   _ignores = [
     "build/**",
     "dist/**",
-    `**/${_project}-worker.js`,
-    `**/*.${_project}-worker.js`,
+    `**/fs-worker.js`,
+    `**/*.fs-worker.js`,
     `**/${_project}.js`,
     `**/*.${_project}.js`,
     `**/lib${_project}.js`,
