@@ -2,7 +2,7 @@
   "name":
     "@themartiancompany/split-file",
   "version":
-    "2.3.25",
+    "2.3.26",
   "private":
     false,
   "description":
@@ -92,7 +92,7 @@
     "serialize-javascript":
       "^7.1.0",
     "safely-serve":
-      "^0.0.22",
+      "^0.0.26",
     "webpack":
       "^5.109.2",
     "webpack-cli":
