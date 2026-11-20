@@ -2,7 +2,7 @@
   "name":
     "@themartiancompany/split-file",
   "version":
-    "2.3.26",
+    "2.3.27",
   "private":
     false,
   "description":
@@ -48,7 +48,7 @@
   ],
   "bin": {
     "split-file":
-      "./split-file"
+      "split-file"
   },
   "main":
     "./libsplit-file",
@@ -60,7 +60,7 @@
     "type":
       "git",
     "url":
-      "https://github.com/themartiancompany/node-split-file.git"
+      "git+https://github.com/themartiancompany/node-split-file.git"
   },
   "dependencies": {
     "bluebird":
