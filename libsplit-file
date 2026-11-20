@@ -44,9 +44,13 @@ const
   _stat =
     _fs_module.stat;
 const
-  _promise =
+  _promise_module =
     await import(
       "bluebird");
+const
+  _promise =
+    _promise_module[
+      "default"];
 const
   _promise_reject =
     _promise.reject;
