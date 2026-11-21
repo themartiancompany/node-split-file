@@ -402,14 +402,12 @@ _split_file.prototype._split_file_by_size =
         _size_max,
         _output_dir,
         _parts_amount);
-  // const
-  //   _split =
-  //     _stat_promisified(
-  //       _input_file).then(
-  //         _split_file_by_size_callback);
-  _stat_promisified(
-    _input_file).then(
-      _split_file_by_size_callback);
+  const
+    _split =
+      _stat_promisified(
+        _input_file).then(
+          _split_file_by_size_callback);
+  return _split;
 };
 
 function
