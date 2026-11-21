@@ -264,12 +264,15 @@ _split_file.prototype._split_file_by_size_callback_get =
       _size_max,
       _output_dir,
       _parts_amount) {
+    if ( _parts_amount === -1 ) {
+      true;
+    }
     const
       _split_file_by_size_callback =
         function (
             _stat_out) {
-          let
-            _partition_info;
+          // let
+          //   _partition_info;
           const
             _input_file_rejected =
               _split_file.prototype._input_file_check(
@@ -327,7 +330,7 @@ _split_file.prototype._split_file_by_size_callback_get =
                    _output_dir);
         };
     return _split_file_by_size_callback;
-  }
+  };
 
 /**
  * Split file into number of parts
@@ -385,8 +388,9 @@ _split_file.prototype._split_file_by_size =
     _input_file,
     _size_max,
     _output_dir) {
-  let
-    _parts_amount;
+  const
+    _parts_amount =
+      -1;
   const
     _stat_promisified =
       _promisify(
@@ -398,11 +402,14 @@ _split_file.prototype._split_file_by_size =
         _size_max,
         _output_dir,
         _parts_amount);
-  const
-    _split =
-      _stat_promisified(
-        _input_file).then(
-          _split_file_by_size_callback);
+  // const
+  //   _split =
+  //     _stat_promisified(
+  //       _input_file).then(
+  //         _split_file_by_size_callback);
+  _stat_promisified(
+    _input_file).then(
+      _split_file_by_size_callback);
 };
 
 function
@@ -445,12 +452,11 @@ function
   const
     _read_write_stream_callback =
       function () {
-        let
-          _promise_resolved;
         _writer.close();
-        _promise_resolved =
-          _promise_resolve(
-            _output_file);
+        const
+          _promise_resolved =
+            _promise_resolve(
+              _output_file);
         return _promise_resolved;
       };
   return _read_write_stream_callback;
@@ -467,8 +473,6 @@ _split_file.prototype._merge_files =
   function (
     _input_files,
     _output_file) {
-  let
-    _map_series_function;
   const
     _input_files_rejected =
       _split_file.prototype._input_files_check(
@@ -481,23 +485,23 @@ _split_file.prototype._merge_files =
     return _input_files_rejected;
   }
   // node
-  const
-    _writer_node =
-      _write_stream_create(
-        _output_file,
-        { "encoding":
-            null,
-        });
-  _map_series_function =
-    function (
-      _input_file) {
-      const
-        _merge_files_read_write_stream_promise =
-          _merge_files_read_write_stream_node_promise_get(
-            _input_file,
-            _writer_node);
-      return _merge_files_read_write_stream_promise; 
-    };
+  // const
+  //   _writer_node =
+  //     _write_stream_create(
+  //       _output_file,
+  //       { "encoding":
+  //           null,
+  //       });
+  // _map_series_function =
+  //   function (
+  //     _input_file) {
+  //     const
+  //       _merge_files_read_write_stream_promise =
+  //         _merge_files_read_write_stream_node_promise_get(
+  //           _input_file,
+  //           _writer_node);
+  //     return _merge_files_read_write_stream_promise; 
+  //   };
   // node
   const
     _writer_opfs =
@@ -507,16 +511,17 @@ _split_file.prototype._merge_files =
             null,
         });
   // browser
-  _map_series_function =
-    function (
-      _input_file) {
-      const
-        _merge_files_read_write_stream_promise =
-          _merge_files_read_write_stream_opfs_promise_get(
-            _input_file,
-            _writer_opfs);
-      return _merge_files_read_write_stream_promise; 
-    };
+  const
+    _map_series_function =
+      function (
+        _input_file) {
+        const
+          _merge_files_read_write_stream_promise =
+            _merge_files_read_write_stream_opfs_promise_get(
+              _input_file,
+              _writer_opfs);
+        return _merge_files_read_write_stream_promise; 
+      };
   const
     _tasks =
       _map_series(
