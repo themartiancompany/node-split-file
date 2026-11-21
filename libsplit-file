@@ -73,9 +73,9 @@ _basename =
 const
 _resolve =
   _path_module.resolve;
-const
-  resolve =
-    _resolve;
+// const
+//   resolve =
+//     _resolve;
 const
   _ceil =
     Math.ceil;
@@ -154,9 +154,10 @@ _split_file.prototype._input_files_check =
       _msg,
       _rejection;
     if ( _input_files.length <= 0 ) {
-      _msg =
-        "Make sure you input an array " +
-        "with files as first parameter."
+      const
+        _msg =
+          "Make sure you input an array " +
+          "with files as first parameter.";
       _error =
         new Error(
           _msg); 
@@ -193,63 +194,68 @@ _split_file.prototype._split_file_callback_get =
     _parts_amount,
     _output_dir,
     _target_partitions) {
-    let
-      _split_file_callback;
-    _split_file_callback =
-      function(
-        _stat_out) {
-        let
-          _input_file_rejected,
-          _split_size,
-          _split_size_last,
-          _split_size_rejected,
-          _size_total;
-        _input_file_rejected =
-          _split_file.prototype._input_file_check(
-            _stat_out);
-        if ( typeof _input_file_rejected !== 'undefined' ) {
-          return _input_file_rejected;
-        }
-        _size_total =
-          _stat_out.size;
-        _split_size =
-          _floor(
-            _size_total / _parts_amount );
-        _split_size_rejected =
-          _split_file.prototype._split_size_check(
-            _split_size);
-        if ( typeof _split_size_rejected !== 'undefined' ) {
-          return _split_size_rejected;
-        }
-        // Get last split size, this is different
-        // from the others because it uses scrap value.
-        _split_size_last =
-          _split_size + ( _size_total % _parts_amount );
-        // Iterate on the parts
-        for ( let _partition = 0;
-              _partition < _parts_amount;
-              _partition++) {
-          _target_partitions[
-            _partition] =
-            { number:
+    const
+      _split_file_callback =
+        function(
+          _stat_out) {
+          let
+            _partition;
+          const
+            _input_file_rejected =
+              _split_file.prototype._input_file_check(
+                _stat_out);
+          if ( typeof _input_file_rejected !== 'undefined' ) {
+            return _input_file_rejected;
+          }
+          const
+            _size_total =
+              _stat_out.size;
+          const
+            _split_size =
+              _floor(
+                _size_total / _parts_amount );
+          const
+            _split_size_rejected =
+              _split_file.prototype._split_size_check(
+                _split_size);
+          const
+            _split_size_rejected_type =
+              typeof(
+                _split_size_rejected);
+          if ( _split_size_rejected_type !== 'undefined' ) {
+            return _split_size_rejected;
+          }
+          // Get last split size, this is different
+          // from the others because it uses scrap value.
+          const
+            _split_size_last =
+              _split_size + ( _size_total % _parts_amount );
+          // Iterate on the parts
+          for ( _partition = 0;
+                _partition < _parts_amount;
+                _partition++) {
+            _target_partitions[
+              _partition] = {
+              "number":
                 _partition + 1,
               // Set buffer read start position
-              start:
+              "start":
                 _partition * _split_size,
               // Set total ending position
-              end:
-                ( _partition * _split_size ) + _split_size };
-          if ( _partition === _parts_amount - 1 ) {
-            _target_partitions[
-              _partition].end =
-                ( _partition * _split_size ) + _split_size_last;
+              "end":
+                ( _partition * _split_size ) + _split_size
+	    };
+            if ( _partition === _parts_amount - 1 ) {
+              _target_partitions[
+                _partition].end =
+                  ( _partition * _split_size ) + _split_size_last;
+            }
           }
-        }
-        return _split_file.prototype._split_file_main(
-                 _input_file,
-                 _target_partitions,
-                 _output_dir);
-      };
+          return _split_file.prototype._split_file_main(
+                   _input_file,
+                   _target_partitions,
+                   _output_dir);
+        };
     return _split_file_callback;
   };
 
