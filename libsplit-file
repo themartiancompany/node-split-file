@@ -68,11 +68,11 @@ const
     await import(
       "path");
 const
-_basename =
-  _path_module.basename;
-const
-_resolve =
-  _path_module.resolve;
+  _basename =
+    _path_module.basename;
+// const
+//   _resolve =
+//     _path_module.resolve;
 // const
 //   resolve =
 //     _resolve;
@@ -151,7 +151,6 @@ _split_file.prototype._input_files_check =
     _input_files) {
     let
       _error,
-      _msg,
       _rejection;
     if ( _input_files.length <= 0 ) {
       const
@@ -265,64 +264,63 @@ _split_file.prototype._split_file_by_size_callback_get =
       _size_max,
       _output_dir,
       _parts_amount) {
-    let
-      _split_file_by_size_callback;
-    _split_file_by_size_callback =
-      function (
-          _stat_out) {
-        let
-          _input_file_rejected,
-          _partition_info,
-          _size_total,
-          _split_size,
-          _split_size_rejected,
-          _parts_amount;
-        _input_file_rejected =
-          _split_file.prototype._input_file_check(
-            _stat_out);
-        if ( typeof _input_file_rejected !== 'undefined' ) {
-          return _input_file_rejected;
-        }
-        _size_total =
-          _stat_out.size;
-        _parts_amount =
-          _ceil(
-            _size_total / _size_max);
-        _split_size =
-          _round(
-            _size_max);
-        _split_size_rejected =
-          _split_file.prototype._split_size_check(
-            _split_size);
-        if ( typeof _split_size_rejected !== 'undefined' ) {
-          return _split_size_rejected;
-        }
-        // Define the _partition_info:
-        _target_partitions =
-          [];
-        for ( let _partition = 0;
-              _partition < _parts_amount;
-              _partition++) {
+    const
+      _split_file_by_size_callback =
+        function (
+            _stat_out) {
+          let
+            _input_file_rejected,
+            _partition_info;
+          _input_file_rejected =
+            _split_file.prototype._input_file_check(
+              _stat_out);
+          if ( typeof _input_file_rejected !== 'undefined' ) {
+            return _input_file_rejected;
+          }
+          const
+            _size_total =
+              _stat_out.size;
+          const
+            _parts_amount =
+              _ceil(
+                _size_total / _size_max);
+          const
+            _split_size =
+              _round(
+                _size_max);
+          const
+            _split_size_rejected =
+              _split_file.prototype._split_size_check(
+                _split_size);
+          if ( typeof _split_size_rejected !== 'undefined' ) {
+            return _split_size_rejected;
+          }
+          // Define the _partition_info:
+          _target_partitions =
+            [];
+          for ( let _partition = 0;
+                _partition < _parts_amount;
+                _partition++) {
+            _target_partitions[
+              _partition] =
+              { number:
+                  _partition + 1,
+                // Set buffer read start position
+                start:
+                  _partition * _split_size,
+                // Set total ending position
+                end:
+                  ( _partition * _split_size ) + _split_size };
+          }
+          // recalculate the size of the last chunk
           _target_partitions[
-            _partition] =
-            { number:
-                _partition + 1,
-              // Set buffer read start position
-              start:
-                _partition * _split_size,
-              // Set total ending position
-              end:
-                ( _partition * _split_size ) + _split_size };
-        }
-        // recalculate the size of the last chunk
-        _target_partitions[
-          _target_partitions.length - 1].end =
-          _size_total;
-        return _split_file.prototype._split_file_main(
-                 _input_file,
-                 _target_partitions,
-                 _output_dir);
-      };
+            _target_partitions.length - 1].end =
+            _size_total;
+          return _split_file.prototype._split_file_main(
+                   _input_file,
+                   _target_partitions,
+                   _output_dir);
+        };
     return _split_file_by_size_callback;
   }
 
