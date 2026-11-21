@@ -120,7 +120,7 @@
     "build-fs-worker":
       "npx webpack --mode 'production' --config 'fs-worker.webpack.config.cjs' --stats-error-details && for _target in 'libsplit-file'; do cp 'fs-worker.js' 'dist/'${_target}; done",
     "build-lib":
-      "npx webpack --mode 'production' --config 'webpack.config.cjs' --stats-error-details && cp 'libsplitfile.js' 'dist/libsplitfile'",
+      "npx webpack --mode 'production' --config 'webpack.config.cjs' --stats-error-details && cp 'libsplit-file.js' 'dist/libsplit-file'",
     "lint":
       "npx eslint .",
     "test":
