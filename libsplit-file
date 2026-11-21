@@ -555,46 +555,42 @@ function
     _output_files) {
   let
     _output_file,
-    _output_file_name,
-    _read_write_stream_promise;
+    _output_file_name;
   const
     _read_write_stream_promise_function =
       function (
         _resolve,
         _reject) {
         let
-          _suffix_current,
-          _partition,
-          _partition_name,
-          _partition_unpadded,
-          _reader,
-          _reader_opts,
-          _suffix_length;
-        _reader_opts =
-          { encoding:
-              null,
-            start:
-              _partition_info.start,
-            end:
-              _partition_info.end - 1 };
-        _reader =
-          _read_stream_create(
-            _input_file,
-            _reader_opts);
+          _suffix_current;
+        const
+          _reader_opts =
+            { "encoding":
+                null,
+              "start":
+                _partition_info.start,
+              "end":
+                _partition_info.end - 1 };
+        const
+          _reader =
+            _read_stream_create(
+              _input_file,
+              _reader_opts);
         // Part name (file name of part)
         // get the max number of digits to generate for part number
         // ex. if original file is split into 4 files, then it will be 1
         // ex. if original file is split into 14 files, then it will be 2
         // etc.
-        _suffix_length =
-          String(
-            _target_partitions.length).length;
+        const
+          _suffix_length =
+            String(
+              _target_partitions.length).length;
         // initial part number
         // ex. '0', '00', '000', etc.
         _suffix_current = "";
         for ( let _digit = 0;
                   _digit < _suffix_length;
-                  _digit++) {
+                  _digit++ ) {
           _suffix_current +=
             "0";
         }
@@ -602,21 +598,28 @@ function
         // <file>.sf-part01
         // ...
         // <file>.sf-part14
-        _partition_unpadded =
-          "" + _partition_info.number;
-        _pad =
-          _suffix_current.substring(
-            0,
-            _suffix_current.length - _partition_unpadded.length);
-        _partition =
-          _pad + _partition_unpadded;
-        _partition_name =
-          _input_file + ".sf-part" + _partition;
-        _file_write_stream =
-          _file_write_stream_function_get(
-            _reader,
-            _reject,
-            _resolve);
+        const
+          _partition_unpadded =
+            "" + _partition_info.number;
+        const
+          _pad =
+            _suffix_current.substring(
+              0,
+              _suffix_current.length - _partition_unpadded.length);
+        const
+          _partition =
+            _pad + _partition_unpadded;
+        const
+          _partition_name =
+            _input_file +
+            ".sf-part" +
+            _partition;
+        const
+          _file_write_stream =
+            _file_write_stream_function_get(
+              _reader,
+              _reject,
+              _resolve);
         if ( _output_dir ) {
           _output_file_name =
             _basename(
@@ -638,9 +641,10 @@ function
         _output_files.push(
           _output_file);
     };
-  _read_write_stream_promise =
-    new _promise(
-      _read_write_stream_promise_function);
+  const
+    _read_write_stream_promise =
+      new _promise(
+        _read_write_stream_promise_function);
   return _read_write_stream_promise;
 }
 
