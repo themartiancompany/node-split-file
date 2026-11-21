@@ -382,23 +382,23 @@ _split_file.prototype._split_file_by_size =
     _size_max,
     _output_dir) {
   let
-    _parts_amount,
-    _split,
-    _split_file_by_size_callback,
-    _stat_promisified;
-  _stat_promisified =
-    _promisify(
-      _stat);
-  _split_file_by_size_callback =
-    _split_file.prototype._split_file_by_size_callback_get(
-      _input_file,
-      _size_max,
-      _output_dir,
-      _parts_amount);
-  _split =
-    _stat_promisified(
-      _input_file).then(
-        _split_file_by_size_callback);
+    _parts_amount;
+  const
+    _stat_promisified =
+      _promisify(
+        _stat);
+  const
+    _split_file_by_size_callback =
+      _split_file.prototype._split_file_by_size_callback_get(
+        _input_file,
+        _size_max,
+        _output_dir,
+        _parts_amount);
+  const
+    _split =
+      _stat_promisified(
+        _input_file).then(
+          _split_file_by_size_callback);
 };
 
 function
@@ -426,7 +426,7 @@ function
       _reader.on(
         "end",
         _resolve);
-    }
+    };
   const
     _read_write_stream_promise =
       new _promise(
@@ -656,17 +656,15 @@ function
 function
   _split_file_read_write_stream_callback_get(
     _output_files) {
-  let
-    _read_write_stream_callback;
-  _read_write_stream_callback =
-    function () {
-      let
-        _promise_resolved;
-      _promise_resolved =
-        _promise_resolve(
-          _output_files);
-      return _promise_resolved;
-  };
+  const
+    _read_write_stream_callback =
+      function () {
+        const
+          _promise_resolved =
+            _promise_resolve(
+              _output_files);
+        return _promise_resolved;
+    };
   return _read_write_stream_callback;
 }
 
@@ -699,7 +697,7 @@ _split_file.prototype._split_file_main =
               _partition_info,
               _output_files);
         return _split_file_read_write_stream_promise;
-  }
+    };
   const
     _tasks =
       _map_series(
