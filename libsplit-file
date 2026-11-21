@@ -269,12 +269,16 @@ _split_file.prototype._split_file_by_size_callback_get =
         function (
             _stat_out) {
           let
-            _input_file_rejected,
             _partition_info;
-          _input_file_rejected =
-            _split_file.prototype._input_file_check(
-              _stat_out);
-          if ( typeof _input_file_rejected !== 'undefined' ) {
+          const
+            _input_file_rejected =
+              _split_file.prototype._input_file_check(
+                _stat_out);
+          const
+            _input_file_rejected_type =
+              typeof(
+                _input_file_rejected);
+          if ( _input_file_rejected_type !== 'undefined' ) {
             return _input_file_rejected;
           }
           const
