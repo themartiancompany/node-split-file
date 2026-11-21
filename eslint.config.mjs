@@ -52,7 +52,9 @@ export default defineConfig([
          "error" },
    files:
      [ "**/*.{js,mjs,cjs}",
-       `**/${_project}` ],
+       `**/${_project}`,
+       `**/lib${_project}`
+     ],
    plugins:
      { js },
    extends:
