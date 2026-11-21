@@ -296,8 +296,9 @@ _split_file.prototype._split_file_by_size_callback_get =
             return _split_size_rejected;
           }
           // Define the _partition_info:
-          _target_partitions =
-            [];
+          const
+            _target_partitions =
+              [];
           for ( let _partition = 0;
                 _partition < _parts_amount;
                 _partition++) {
@@ -336,36 +337,36 @@ _split_file.prototype._split_file =
     _input_file,
     _parts_amount,
     _output_dir) {
-  let
-    _error,
-    _msg,
-    _parts_rejected,
-    _rejection,
-    _split_file_callback,
-    _split_file_promise,
-    _stat_promisified,
-    _target_partitions;
-  _target_partitions =
-    [];
-  _parts_rejected =
-    _split_file.prototype._parts_amount_check(
-      _parts_amount);
-  if ( typeof _parts_rejected !== 'undefined' ) {
+  const
+    _target_partitions =
+      [];
+  const
+    _parts_rejected =
+      _split_file.prototype._parts_amount_check(
+        _parts_amount);
+  const
+    _parts_rejected_type =
+      typeof(
+        _parts_rejected);
+  if ( _parts_rejected_type !== 'undefined' ) {
     return _parts_rejected;
   }
-  _stat_promisified =
-    _promisify(
-      _stat);
-  _split_file_callback =
-    _split_file.prototype._split_file_callback_get(
-      _input_file,
-      _parts_amount,
-      _output_dir,
-      _target_partitions);
-  _split_file_promise =
-    _stat_promisified(
-      _input_file).then(
-        _split_file_callback);
+  const
+    _stat_promisified =
+      _promisify(
+        _stat);
+  const
+    _split_file_callback =
+      _split_file.prototype._split_file_callback_get(
+        _input_file,
+        _parts_amount,
+        _output_dir,
+        _target_partitions);
+  const
+    _split_file_promise =
+      _stat_promisified(
+        _input_file).then(
+          _split_file_callback);
   return _split_file_promise;
 };
 
