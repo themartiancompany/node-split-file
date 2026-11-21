@@ -405,34 +405,32 @@ function
   _merge_files_read_write_stream_opfs_promise_get(
     _input_file,
     _writer) {
-  let
-    _read_write_stream_promise_function,
-    _read_write_stream_promise;
-  _read_write_stream_promise_function =
-    function(
-      _resolve,
-      _reject) {
-    let
-      _reader;
-    _reader =
-      _read_stream_create(
-        _input_file,
-        { encoding:
-            null });
-    _reader.pipe(
-      _writer,
-      { end:
-          false });
-    _reader.on(
-      "error",
-      _reject);
-    _reader.on(
-      "end",
-      _resolve);
-  }
-  _read_write_stream_promise =
-    new _promise(
-      _read_write_stream_promise_function);
+  const
+    _read_write_stream_promise_function =
+      function(
+        _resolve,
+        _reject) {
+      const
+        _reader =
+          _read_stream_create(
+            _input_file,
+            { "encoding":
+                null });
+      _reader.pipe(
+        _writer,
+        { end:
+            false });
+      _reader.on(
+        "error",
+        _reject);
+      _reader.on(
+        "end",
+        _resolve);
+    }
+  const
+    _read_write_stream_promise =
+      new _promise(
+        _read_write_stream_promise_function);
   return _read_write_stream_promise;
 }
 
@@ -440,18 +438,17 @@ function
   _merge_files_read_write_stream_callback_get(
     _output_file,
     _writer) {
-  let
-    _read_write_stream_callback;
-  _read_write_stream_callback =
-    function () {
-      let
-        _promise_resolved;
-      _writer.close();
-      _promise_resolved =
-        _promise_resolve(
-          _output_file);
-      return _promise_resolved;
-    };
+  const
+    _read_write_stream_callback =
+      function () {
+        let
+          _promise_resolved;
+        _writer.close();
+        _promise_resolved =
+          _promise_resolve(
+            _output_file);
+        return _promise_resolved;
+      };
   return _read_write_stream_callback;
 }
 
@@ -467,60 +464,63 @@ _split_file.prototype._merge_files =
     _input_files,
     _output_file) {
   let
-    _input_files_rejected,
-    _map_series_function,
-    _tasks,
-    _writer_node;
-  _input_files_rejected =
-    _split_file.prototype._input_files_check(
-      _input_files);
-  if ( typeof _input_files_rejected !== 'undefined' ) {
+    _map_series_function;
+  const
+    _input_files_rejected =
+      _split_file.prototype._input_files_check(
+        _input_files);
+  const
+    _input_files_rejected_type =
+      typeof(
+        _input_files_rejected);
+  if ( _input_files_rejected_type !== 'undefined' ) {
     return _input_files_rejected;
   }
   // node
-  _writer_node =
-    _write_stream_create(
-      _output_file,
-      { encoding:
-          null,
-      });
+  const
+    _writer_node =
+      _write_stream_create(
+        _output_file,
+        { "encoding":
+            null,
+        });
   _map_series_function =
     function (
       _input_file) {
-      let
-        _merge_files_read_write_stream_promise;
-      _merge_files_read_write_stream_promise =
-        _merge_files_read_write_stream_node_promise_get(
-          _input_file,
-          _writer_node);
+      const
+        _merge_files_read_write_stream_promise =
+          _merge_files_read_write_stream_node_promise_get(
+            _input_file,
+            _writer_node);
       return _merge_files_read_write_stream_promise; 
     };
   // node
-  _writer_opfs =
-    _write_stream_create(
-      _output_file,
-      { encoding:
-          null,
-      });
+  const
+    _writer_opfs =
+      _write_stream_create(
+        _output_file,
+        { "encoding":
+            null,
+        });
   // browser
   _map_series_function =
     function (
       _input_file) {
-      let
-        _merge_files_read_write_stream_promise;
-      _merge_files_read_write_stream_promise =
-        _merge_files_read_write_stream_opfs_promise_get(
-          _input_file,
-          _writer_opfs);
+      const
+        _merge_files_read_write_stream_promise =
+          _merge_files_read_write_stream_opfs_promise_get(
+            _input_file,
+            _writer_opfs);
       return _merge_files_read_write_stream_promise; 
     };
-  _tasks =
-    _map_series(
-      _input_files,
-      _map_series_function).then(
-      _merge_files_read_write_stream_callback_get(
-        _output_file,
-        _writer_opfs));
+  const
+    _tasks =
+      _map_series(
+        _input_files,
+        _map_series_function).then(
+        _merge_files_read_write_stream_callback_get(
+          _output_file,
+          _writer_opfs));
   return _tasks;
 };
 
